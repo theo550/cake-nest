@@ -22,6 +22,7 @@ const Title = styled.h1`
   color: ${theme.colors.white};
   font-size: ${theme.fonts.size.P5};
   margin: ${theme.gridUnit * 5}px 0;
+  font-weight: ${theme.fonts.weights.bold};
 `;
 
 const Logo = styled.h1`
