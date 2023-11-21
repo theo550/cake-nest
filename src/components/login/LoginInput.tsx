@@ -32,7 +32,7 @@ const LoginInput = () => {
           <PiUserCircleFill color={theme.colors.greyMedium} style={{ position: 'absolute', left: '15px', top: '50%', transform: 'translateY(-50%)', fontSize: '1.5rem' }}/>
           <input
             type="text"
-            placeholder='Entrez votre prénom...'
+            placeholder='Entrez votre prénom'
             onChange={handleName}
             value={name}
             />
