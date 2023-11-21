@@ -1,13 +1,15 @@
 import React, { useState } from 'react'
+import { useNavigate } from 'react-router-dom';
 
 const LoginInput = () => {
   const [name, setName] = useState('');
+  const navigate = useNavigate();
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (name !== '') {
-      alert('Bonjour ' + name);
       setName('');
+      navigate('/order', {state:{name: name || ''}})
     } else {
       alert('Il doit y avoir un nom !')
     }
