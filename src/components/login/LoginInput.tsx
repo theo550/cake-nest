@@ -9,7 +9,7 @@ const LoginInput = () => {
     e.preventDefault();
     if (name !== '') {
       setName('');
-      navigate('/order', {state:{name: name || ''}})
+      navigate('/order', {state:{ name: name }})
     } else {
       alert('Il doit y avoir un nom !')
     }
