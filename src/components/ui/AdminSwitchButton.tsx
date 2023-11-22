@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { showNotification } from "../../utils/toasts"
-import { ToastContainer } from 'react-toastify'
 import styled from "styled-components";
 import { theme } from "../../theme/theme";
 
@@ -16,7 +15,6 @@ function AdminSwitchButton() {
     <StyledButton onClick={handleNotification}>
       <Round $isAdmin={isAdmin}/>
       <p>{isAdmin ? 'Désactiver' : 'Activer'} le mode admin</p>
-      <ToastContainer/>
     </StyledButton>
   )
 }
@@ -39,6 +37,10 @@ const StyledButton = styled.div`
   align-items: center;
 
   cursor: pointer;
+
+  p {
+    margin-right: 15px;
+  }
 `;
 
 const Round = styled.div<{ $isAdmin: boolean }>`
