@@ -4,6 +4,7 @@ import styled from "styled-components";
 import { theme } from "../../theme/theme";
 import { Link } from "react-router-dom";
 import { PiUserCircleFill } from "react-icons/pi";
+import AdminSwitchButton from "../ui/AdminSwitchButton";
 
 function UserDetails() {
   const location = useLocation();
@@ -21,6 +22,7 @@ function UserDetails() {
         <h1>Salut <span>{state.name}</span></h1>
         <Link to='/'>Se déconnecter</Link>
       </div>
+      <AdminSwitchButton/>
     </UserDetailsContainer>
   )
 }
