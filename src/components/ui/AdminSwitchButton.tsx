@@ -1,10 +1,12 @@
-import { useState } from "react";
+import { useContext } from "react";
 import { showNotification } from "../../utils/toasts"
 import styled from "styled-components";
 import { theme } from "../../theme/theme";
+import { AdminContextType } from "../../types/admin";
+import { AdminContext } from "../../App";
 
 function AdminSwitchButton() {
-  const [isAdmin, setIsAdmin] = useState(false);
+  const { isAdmin, setIsAdmin } = useContext(AdminContext) as AdminContextType;
 
   const handleNotification = () => {
     showNotification({ isAdmin });
