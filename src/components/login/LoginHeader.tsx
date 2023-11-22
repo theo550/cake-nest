@@ -23,6 +23,7 @@ const Title = styled.h1`
   font-size: ${theme.fonts.size.P5};
   margin: ${theme.gridUnit * 5}px 0;
   font-weight: ${theme.fonts.weights.bold};
+  margin-top: 100px;
 `;
 
 const Logo = styled.h1`
@@ -34,7 +35,6 @@ const Logo = styled.h1`
   font-size: ${theme.fonts.size.P5};
   font-weight: ${theme.fonts.weights.medium};
   font-family: 'Open Sans', sans-serif;
-  margin-bottom: 100px;
 
   span {
     img {
