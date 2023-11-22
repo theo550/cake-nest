@@ -10,7 +10,7 @@ function MenuItem() {
 
       {fakeMenu2.map(menu => {
         return (
-          <MenuItemContainer>
+          <MenuItemContainer key={menu.id}>
             <img src={menu.imageSource} alt="" />
             <h3>{menu.title}</h3>
             <div>
