@@ -1,10 +1,19 @@
+import styled from "styled-components";
+import MenuItem from "./MenuItem";
 
 function OrderPage() {
   return (
-    <div>
-      <p>order</p>
-    </div>
+    <OrderContainer>
+      <MenuItem/>
+    </OrderContainer>
   )
 }
 
-export default OrderPage
+export default OrderPage;
+
+const OrderContainer = styled.div`
+  padding: 50px 50px 150px;
+  flex-grow: 1;
+
+  overflow: scroll;
+`;

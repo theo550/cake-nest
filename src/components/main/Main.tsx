@@ -26,4 +26,6 @@ const Container = styled.div`
   box-shadow: inset 0px 0px 50px 0px rgba(0,0,0,0.3);
   -webkit-box-shadow: inset 0px 0px 50px 0px rgba(0,0,0,0.3);
   -moz-box-shadow: inset 0px 0px 50px 0px rgba(0,0,0,0.3);
+
+  overflow: auto;
 `;

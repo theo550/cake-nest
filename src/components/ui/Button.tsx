@@ -25,6 +25,11 @@ const StyledButton = styled.button`
   font-size: ${theme.fonts.size.P1};
   font-weight: ${theme.fonts.weights.bold};
   cursor: pointer;
+  padding: 5px 25px;
+
+  &:hover {
+    background-color: ${theme.colors.primary_cake};
+  }
 
   span {
     margin-left: 15px;
