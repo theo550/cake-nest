@@ -2,11 +2,11 @@ import styled from 'styled-components'
 import AdminNavigation from './AdminNavigation';
 import { createContext } from 'react';
 import { useState } from 'react';
-import { SelectedTabContextType, isOpenContextType } from '../../types/admin';
+import { SelectedTabContextType } from '../../types/admin';
 import AdminContent from './AdminContent';
+import { isOpenContext } from '../../context/isOpenContext';
 
 export const AdminTabContext = createContext<SelectedTabContextType | null>(null);
-export const isOpenContext = createContext<isOpenContextType | null>(null);
 
 function AdminPanel() {
   const [selectedTab, setSelectedTab] = useState(0);

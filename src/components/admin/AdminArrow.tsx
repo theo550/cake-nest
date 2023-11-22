@@ -2,8 +2,8 @@ import { useContext } from "react";
 import { FiChevronDown, FiChevronUp } from "react-icons/fi";
 import styled from "styled-components";
 import { theme } from "../../theme/theme";
-import { isOpenContext } from "./AdminPanel";
 import { isOpenContextType } from "../../types/admin";
+import { isOpenContext } from "../../context/isOpenContext";
 
 function AdminArrow() {
   const { isOpen, setIsOpen } = useContext(isOpenContext) as isOpenContextType;

@@ -1,10 +1,11 @@
 import styled from 'styled-components'
 import { theme } from '../../theme/theme';
 import { useContext } from 'react';
-import { AdminTabContext, isOpenContext } from './AdminPanel';
+import { AdminTabContext } from './AdminPanel';
 import { SelectedTabContextType, isOpenContextType } from '../../types/admin';
 import AddProduct from '../../page/admin/AddProduct';
 import UpdateProduct from '../../page/admin/UpdateProduct';
+import { isOpenContext } from '../../context/isOpenContext';
 
 function AdminContent() {
   const { selectedTab } = useContext(AdminTabContext) as SelectedTabContextType;

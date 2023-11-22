@@ -1,8 +1,9 @@
 import styled from "styled-components";
 import { theme } from "../../theme/theme";
 import { useContext } from "react";
-import { AdminTabContext, isOpenContext } from "./AdminPanel";
+import { AdminTabContext } from "./AdminPanel";
 import { SelectedTabContextType, isOpenContextType } from "../../types/admin";
+import { isOpenContext } from "../../context/isOpenContext";
 
 type Props = {
   id: number;
