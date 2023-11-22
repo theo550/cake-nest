@@ -45,4 +45,5 @@ export default AdminNavigation
 const AdminNav = styled.li`
   display: flex;
   align-items: center;
+  margin-left: 100px;
 `;

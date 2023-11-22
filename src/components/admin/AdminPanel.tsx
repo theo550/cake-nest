@@ -2,16 +2,22 @@ import styled from 'styled-components'
 import AdminNavigation from './AdminNavigation';
 import { createContext } from 'react';
 import { useState } from 'react';
-import { SelectedTabContextType } from '../../types/admin';
+import { SelectedTabContextType, isOpenContextType } from '../../types/admin';
+import AdminContent from './AdminContent';
 
 export const AdminTabContext = createContext<SelectedTabContextType | null>(null);
+export const isOpenContext = createContext<isOpenContextType | null>(null);
 
 function AdminPanel() {
   const [selectedTab, setSelectedTab] = useState(0);
+  const [isOpen, setIsOpen] = useState(false);
   return (
     <AdminContainer>
       <AdminTabContext.Provider value={{ selectedTab, setSelectedTab }}>
-        <AdminNavigation/>
+        <isOpenContext.Provider value={{ isOpen, setIsOpen }}>
+          <AdminNavigation/>
+          <AdminContent/>
+        </isOpenContext.Provider>
       </AdminTabContext.Provider>
     </AdminContainer>
   )
@@ -20,7 +26,7 @@ function AdminPanel() {
 export default AdminPanel
 
 const AdminContainer = styled.div`
-  position: fixed;
-  left: 150px;
-  bottom: 50px;
+  bottom: 0;
+  left: 0;
+  position: sticky;
 `;

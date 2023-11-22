@@ -1,20 +1,22 @@
-import { useState } from "react";
+import { useContext } from "react";
 import { FiChevronDown, FiChevronUp } from "react-icons/fi";
 import styled from "styled-components";
 import { theme } from "../../theme/theme";
+import { isOpenContext } from "./AdminPanel";
+import { isOpenContextType } from "../../types/admin";
 
 function AdminArrow() {
-  const [open, setOpen] = useState(true);
+  const { isOpen, setIsOpen } = useContext(isOpenContext) as isOpenContextType;
 
   const handlePanel = () => {
-    setOpen(!open);
+    setIsOpen(!isOpen);
   }
 
   return (
     <ArrowContainer onClick={handlePanel}>
-      {open 
-      ? <FiChevronUp/>
-      : <FiChevronDown/>
+      {isOpen 
+      ? <FiChevronDown/>
+      : <FiChevronUp/>
     }
     </ArrowContainer>
   )

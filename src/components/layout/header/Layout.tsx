@@ -16,12 +16,12 @@ function Layout() {
       <MainContainer>
         <Header/>
         <Main>
-          <div>
+          <ContentContainer>
             <Outlet/>
             {isAdmin &&
               <AdminPanel/>
             }
-          </div>
+          </ContentContainer>
         </Main>
       </MainContainer>
     </LayoutContainer>
@@ -48,4 +48,8 @@ const MainContainer = styled.div`
   flex-grow: 1;
 
   height: 1px;
+`;
+
+const ContentContainer = styled.div`
+  position: relative;
 `;
