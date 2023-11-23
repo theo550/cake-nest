@@ -15,7 +15,7 @@ const Button = (props: Props) => {
   return (
     <StyledButton
       size={size || 'lg'}
-      background={background || theme.colors.primary_cake}
+      background={background || theme.colors.primary}
       type='submit'
       onClick={onClick}
     >

@@ -1,16 +1,28 @@
+import { useContext } from "react"
 import Button from "../../components/ui/Button"
 import styled from "styled-components"
 import { theme } from "../../theme/theme"
-import { fakeMenu2 } from "../../data/fakeMenu"
 import { formatPrice, replaceDot } from "../../utils/math"
+import { TiDelete } from 'react-icons/ti'
+import { MenuContextType } from "../../types/menu"
+import { menuContext } from "../../context/menuContext"
 
 function MenuItem() {
+  const { menu, setMenu } = useContext(menuContext) as MenuContextType;
+  
+  const handleDeleteItem = (id: number) => {
+    setMenu([...menu.filter(menu => menu.id !== id)]);
+  }
+
   return (
     <MenuWrapper>
 
-      {fakeMenu2.map(menu => {
+      {menu.map(menu => {
         return (
           <MenuItemContainer key={menu.id}>
+            <CustomDeleteButton onClick={() => handleDeleteItem(menu.id)}>
+              <TiDelete size='2rem'/>
+            </CustomDeleteButton>
             <img src={menu.imageSource} alt="" />
             <h3>{menu.title}</h3>
             <div>
@@ -40,6 +52,7 @@ const MenuItemContainer = styled.div`
   box-shadow: -8px 8px 20px 0px rgb(0 0 0 / 20%);
   border-radius: ${theme.borderRadius.extraRound};
   padding: 30px 15px;
+  position: relative;
 
   img {
     width: 200px;
@@ -60,4 +73,12 @@ const MenuItemContainer = styled.div`
     }
   }
 
+`;
+
+const CustomDeleteButton = styled.div`
+  color: ${theme.colors.primary};
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  cursor: pointer;
 `;

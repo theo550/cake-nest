@@ -1,10 +1,17 @@
+import { useState } from "react";
 import styled from "styled-components";
 import MenuItem from "./MenuItem";
+import { menuContext } from "../../context/menuContext";
+import { fakeMenu2 } from "../../data/fakeMenu"
 
 function OrderPage() {
+  const [menu, setMenu] = useState(fakeMenu2);
+
   return (
     <OrderContainer>
-      <MenuItem/>
+      <menuContext.Provider value={{ menu, setMenu }}>
+        <MenuItem/>
+      </menuContext.Provider>
     </OrderContainer>
   )
 }
