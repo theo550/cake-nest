@@ -3,14 +3,25 @@ import styled from 'styled-components'
 import { theme } from '../../../theme/theme';
 import Header from './Header';
 import Main from '../../main/Main';
+import AdminPanel from '../../admin/AdminPanel';
+import { useContext } from 'react';
+import { AdminContext } from '../../../App';
+import { AdminContextType } from '../../../types/admin';
 
 function Layout() {
+  const { isAdmin } = useContext(AdminContext) as AdminContextType;
+
   return (
     <LayoutContainer>
       <MainContainer>
         <Header/>
         <Main>
-          <Outlet/>
+          <ContentContainer>
+            <Outlet/>
+            {isAdmin &&
+              <AdminPanel/>
+            }
+          </ContentContainer>
         </Main>
       </MainContainer>
     </LayoutContainer>
@@ -37,4 +48,8 @@ const MainContainer = styled.div`
   flex-grow: 1;
 
   height: 1px;
+`;
+
+const ContentContainer = styled.div`
+  position: relative;
 `;
