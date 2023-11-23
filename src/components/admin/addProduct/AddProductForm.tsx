@@ -15,6 +15,12 @@ function AddProductForm() {
   const [price, setPrice] = useState('');
   const [submitted, setSubmitted] = useState(false);
 
+  const resteForm = () => {
+    setName('');
+    setImage('');
+    setPrice('');
+  }
+
   const renderCupcake = () => {
     return <GiCupcake color={theme.colors.greyMedium}/>
   }
@@ -55,7 +61,7 @@ function AddProductForm() {
       image,
       price: replaceDot(formatPrice(Number(price)))
     });
-
+    resteForm();
     handleSuccessMessage();
   }
 

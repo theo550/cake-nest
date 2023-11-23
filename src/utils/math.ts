@@ -1,5 +1,5 @@
 export const formatPrice = (price: number) => {
-  return price.toPrecision(3);
+  return price.toFixed(2);
 };
 
 export const replaceDot = (price: string) => {
