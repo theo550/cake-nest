@@ -5,15 +5,18 @@ import { GiCupcake } from 'react-icons/gi';
 import { BsFillCameraFill } from 'react-icons/bs';
 import { MdOutlineEuro } from 'react-icons/md';
 import { theme } from "../../../theme/theme";
-import React, { useState } from "react";
-import { formatPrice, replaceDot } from "../../../utils/math";
+import React, { useContext, useState } from "react";
 import { FiCheck } from "react-icons/fi";
+import { menuContext } from "../../../context/menuContext";
+import { MenuContextType } from "../../../types/menu";
 
 function AddProductForm() {
   const [name, setName] = useState('');
   const [image, setImage] = useState('');
   const [price, setPrice] = useState('');
   const [submitted, setSubmitted] = useState(false);
+
+  const { menu, setMenu } = useContext(menuContext) as MenuContextType;
 
   const resteForm = () => {
     setName('');
@@ -56,11 +59,15 @@ function AddProductForm() {
   }
 
   const handleSubmit = () => {
-    console.log({
-      name,
-      image,
-      price: replaceDot(formatPrice(Number(price)))
-    });
+    setMenu([...menu, {
+      id: menu.length + 1,
+      imageSource: image,
+      price: Number(price),
+      title: name,
+      quantity: 0,
+      isAdvertised: false,
+      isAvailable: true
+    }]);
     resteForm();
     handleSuccessMessage();
   }

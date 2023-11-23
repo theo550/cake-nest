@@ -6,9 +6,12 @@ import { formatPrice, replaceDot } from "../../utils/math"
 import { TiDelete } from 'react-icons/ti'
 import { MenuContextType } from "../../types/menu"
 import { menuContext } from "../../context/menuContext"
+import { AdminContext } from "../../App"
+import { AdminContextType } from "../../types/admin"
 
 function MenuItem() {
   const { menu, setMenu } = useContext(menuContext) as MenuContextType;
+  const { isAdmin } = useContext(AdminContext) as AdminContextType;
   
   const handleDeleteItem = (id: number) => {
     setMenu([...menu.filter(menu => menu.id !== id)]);
@@ -20,10 +23,12 @@ function MenuItem() {
       {menu.map(menu => {
         return (
           <MenuItemContainer key={menu.id}>
-            <CustomDeleteButton onClick={() => handleDeleteItem(menu.id)}>
-              <TiDelete size='2rem'/>
-            </CustomDeleteButton>
-            <img src={menu.imageSource} alt="" />
+            {isAdmin &&
+              <CustomDeleteButton onClick={() => handleDeleteItem(menu.id)}>
+                <TiDelete size='2rem'/>
+              </CustomDeleteButton>
+            }
+            <img src={menu.imageSource || '../../../public/images/cupcake-item.png'} alt="" />
             <h3>{menu.title}</h3>
             <div>
               <p>{replaceDot(formatPrice(menu.price))}€</p>
@@ -56,6 +61,8 @@ const MenuItemContainer = styled.div`
 
   img {
     width: 200px;
+    height: 150px;
+    margin: 0 auto;
   }
 
   h3 {
