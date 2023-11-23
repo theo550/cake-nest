@@ -1,9 +1,17 @@
 import styled from "styled-components";
 import { theme } from "../../../theme/theme";
 
-function AddImage() {
+type Props = {
+  image: string;
+}
+
+function AddImage(props: Props) {
+  const {image} = props;
   return (
     <ImageContainer>
+      {image &&
+        <img src={image} alt="" />
+      }
       <p>Aucune Image</p>
     </ImageContainer>
   )

@@ -1,13 +1,16 @@
 import styled from "styled-components"
 import AddImage from "../../components/admin/addProduct/AddImage";
 import AddProductForm from "../../components/admin/addProduct/AddProductForm";
+import { useState } from "react";
 
 function AddProduct() {
+  const [image, setImage] = useState('');
+
   return (
     <AddProductContainer>
       <FormWrapper>
-        <AddImage/>
-        <AddProductForm/>
+        <AddImage image={image}/>
+        <AddProductForm image={image} setImage={setImage}/>
       </FormWrapper>
     </AddProductContainer>
   )

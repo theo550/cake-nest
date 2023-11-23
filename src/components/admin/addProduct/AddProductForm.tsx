@@ -10,9 +10,14 @@ import { FiCheck } from "react-icons/fi";
 import { menuContext } from "../../../context/menuContext";
 import { MenuContextType } from "../../../types/menu";
 
-function AddProductForm() {
+type Props = {
+  image: string;
+  setImage: React.Dispatch<React.SetStateAction<string>>;
+}
+
+function AddProductForm(props: Props) {
+  const {image, setImage} = props;
   const [name, setName] = useState('');
-  const [image, setImage] = useState('');
   const [price, setPrice] = useState('');
   const [submitted, setSubmitted] = useState(false);
 
@@ -45,7 +50,7 @@ function AddProductForm() {
       case 'price':
         setPrice(e.target.value);
         break;
-    
+
       default:
         break;
     }
