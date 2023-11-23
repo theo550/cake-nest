@@ -29,6 +29,7 @@ function AdminNavigation() {
       {adminTabs.map(tab => {
         return (
           <AdminTab
+            key={tab.id}
             id={tab.id}
             title={tab.title}
             icon={tab.icon}

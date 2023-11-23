@@ -1,17 +1,34 @@
+import { useContext } from "react"
 import Button from "../../components/ui/Button"
 import styled from "styled-components"
 import { theme } from "../../theme/theme"
-import { fakeMenu2 } from "../../data/fakeMenu"
 import { formatPrice, replaceDot } from "../../utils/math"
+import { TiDelete } from 'react-icons/ti'
+import { MenuContextType } from "../../types/menu"
+import { menuContext } from "../../context/menuContext"
+import { AdminContext } from "../../App"
+import { AdminContextType } from "../../types/admin"
 
 function MenuItem() {
+  const { menu, setMenu } = useContext(menuContext) as MenuContextType;
+  const { isAdmin } = useContext(AdminContext) as AdminContextType;
+  
+  const handleDeleteItem = (id: number) => {
+    setMenu([...menu.filter(menu => menu.id !== id)]);
+  }
+
   return (
     <MenuWrapper>
 
-      {fakeMenu2.map(menu => {
+      {menu.map(menu => {
         return (
           <MenuItemContainer key={menu.id}>
-            <img src={menu.imageSource} alt="" />
+            {isAdmin &&
+              <CustomDeleteButton onClick={() => handleDeleteItem(menu.id)}>
+                <TiDelete size='2rem'/>
+              </CustomDeleteButton>
+            }
+            <img src={menu.imageSource || '../../../public/images/cupcake-item.png'} alt="" />
             <h3>{menu.title}</h3>
             <div>
               <p>{replaceDot(formatPrice(menu.price))}€</p>
@@ -40,9 +57,12 @@ const MenuItemContainer = styled.div`
   box-shadow: -8px 8px 20px 0px rgb(0 0 0 / 20%);
   border-radius: ${theme.borderRadius.extraRound};
   padding: 30px 15px;
+  position: relative;
 
   img {
     width: 200px;
+    height: 150px;
+    margin: 0 auto;
   }
 
   h3 {
@@ -60,4 +80,12 @@ const MenuItemContainer = styled.div`
     }
   }
 
+`;
+
+const CustomDeleteButton = styled.div`
+  color: ${theme.colors.primary};
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  cursor: pointer;
 `;
