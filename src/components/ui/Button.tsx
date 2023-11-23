@@ -4,31 +4,42 @@ import { theme } from '../../theme/theme';
 type Props = {
   text: string;
   span?: string;
+  background?: string;
+  size?: 'sm' | 'md' | 'lg';
 }
 
 const Button = (props: Props) => {
-  const { text, span } = props;
+  const { text, span, background, size } = props;
 
   return (
-    <StyledButton type='submit'>{text} {span && <span>{span}</span>}</StyledButton>
+    <StyledButton
+      size={size || 'lg'}
+      background={background || theme.colors.primary_cake}
+      type='submit'
+    >
+      {text} {span && <span>{span}</span>}
+    </StyledButton>
   )
 }
 
 export default Button;
 
-const StyledButton = styled.button`
+const StyledButton = styled.button<{ background: string, size: string }>`
   height: 50px;
   border-radius: ${theme.borderRadius.round};
   border: none;
-  background-color: ${theme.colors.primary};
+  background-color: ${props => props.background};
   color: ${theme.colors.white};
-  font-size: ${theme.fonts.size.P1};
+  font-size: ${props => props.size === 'sm' ? theme.fonts.size.XS : theme.fonts.size.P1};
   font-weight: ${theme.fonts.weights.bold};
   cursor: pointer;
   padding: 5px 25px;
+  width: ${props => props.size === 'sm' ? '250px' : ''};
 
   &:hover {
-    background-color: ${theme.colors.primary_cake};
+    background-color: ${theme.colors.white};
+    color: ${props => props.background};
+    border: 3px solid ${props => props.background};
   }
 
   span {
