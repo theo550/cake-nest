@@ -6,16 +6,18 @@ type Props = {
   span?: string;
   background?: string;
   size?: 'sm' | 'md' | 'lg';
+  onClick?: () => void;
 }
 
 const Button = (props: Props) => {
-  const { text, span, background, size } = props;
+  const { text, span, background, size, onClick } = props;
 
   return (
     <StyledButton
       size={size || 'lg'}
       background={background || theme.colors.primary_cake}
       type='submit'
+      onClick={onClick}
     >
       {text} {span && <span>{span}</span>}
     </StyledButton>

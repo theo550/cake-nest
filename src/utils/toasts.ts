@@ -2,7 +2,7 @@ import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 type Props = {
-  isAdmin: boolean;
+  isAdmin?: boolean;
 }
 
 export const showNotification = (props: Props) => {

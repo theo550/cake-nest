@@ -5,17 +5,26 @@ type Props = {
   Icon: () => JSX.Element;
   placeholer: string;
   width: number;
+  value: string;
+  type: string;
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
 function Input(props: Props) {
-  const { Icon, placeholer, width } = props;
+  const { Icon, placeholer, width, value, type, onChange } = props;
 
   return (
     <CustomInputWrapper>
       <CustomInputIcon>
         {Icon()}
       </CustomInputIcon>
-      <CustomInput $width={width} type='text' placeholder={placeholer}/>
+      <CustomInput
+        onChange={onChange}
+        value={value}
+        $width={width}
+        type={type}
+        placeholder={placeholer}
+      />
     </CustomInputWrapper>
   )
 }
