@@ -2,7 +2,7 @@ import { useContext } from "react"
 import Button from "../../components/ui/Button"
 import styled from "styled-components"
 import { theme } from "../../theme/theme"
-import { formatPrice, replaceDot } from "../../utils/math"
+import { formatPrice, replaceDot, sortArrayOfObject } from "../../utils/math"
 import { TiDelete } from 'react-icons/ti'
 import { MenuContextType } from "../../types/menu"
 import { menuContext } from "../../context/menuContext"
@@ -20,7 +20,7 @@ function MenuItem() {
   return (
     <MenuWrapper>
 
-      {menu.map(menu => {
+      {sortArrayOfObject(menu).map(menu => {
         return (
           <MenuItemContainer key={menu.id}>
             {isAdmin &&
