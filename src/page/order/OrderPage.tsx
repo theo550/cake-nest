@@ -1,10 +1,18 @@
 import styled from "styled-components";
 import MenuItem from "./MenuItem";
+import { useContext } from "react";
+import { menuContext } from "../../context/menuContext";
+import { MenuContextType } from "../../types/menu";
+import EmptyPage from "./EmptyPage";
 
 function OrderPage() {
+  const { menu } = useContext(menuContext) as MenuContextType;
   return (
     <OrderContainer>
-      <MenuItem/>
+      {menu.length > 0
+        ?  <MenuItem/>
+        : <EmptyPage/>
+      }
     </OrderContainer>
   )
 }
