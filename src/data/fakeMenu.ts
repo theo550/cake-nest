@@ -1,4 +1,6 @@
-export const fakeMenu1 = [
+import { MenuType } from "../types/menu"
+
+export const fakeMenu1: MenuType[] = [
   {
     id: 1,
     imageSource: "/images/cupcake-item.png",
@@ -19,7 +21,7 @@ export const fakeMenu1 = [
   },
 ]
 
-export const fakeMenu2 = [
+export const fakeMenu2: MenuType[] = [
   {
     id: 1,
     imageSource: "/images/cupcake-item.png",

@@ -1,3 +1,4 @@
+import React, { useContext, useEffect, useState } from "react";
 import styled from "styled-components";
 import Button from "../../ui/Button"
 import Input from "../../ui/Input";
@@ -5,27 +6,37 @@ import { GiCupcake } from 'react-icons/gi';
 import { BsFillCameraFill } from 'react-icons/bs';
 import { MdOutlineEuro } from 'react-icons/md';
 import { theme } from "../../../theme/theme";
-import React, { useContext, useState } from "react";
 import { FiCheck } from "react-icons/fi";
-import { menuContext } from "../../../context/menuContext";
+import { SelectedMenuContext, menuContext } from "../../../context/menuContext";
 import { MenuContextType } from "../../../types/menu";
+import { SelectedMenuContextType, SelectedTabContextType } from "../../../types/admin";
+import { AdminTabContext } from "../AdminPanel";
 
 type Props = {
   image: string;
-  setImage: React.Dispatch<React.SetStateAction<string>>;
+  setImage?: React.Dispatch<React.SetStateAction<string>>;
+  button?: boolean;
 }
 
 function AddProductForm(props: Props) {
-  const {image, setImage} = props;
+  const {image, button, setImage} = props;
   const [name, setName] = useState('');
   const [price, setPrice] = useState('');
   const [submitted, setSubmitted] = useState(false);
 
   const { menu, setMenu } = useContext(menuContext) as MenuContextType;
+  const { selectedMenu } = useContext(SelectedMenuContext) as SelectedMenuContextType;
+  const { selectedTab } = useContext(AdminTabContext) as SelectedTabContextType;
+
+  useEffect(() => {
+    setName(selectedMenu.title);
+    setPrice(String(selectedMenu.price));
+    setImage && setImage(selectedMenu.imageSource);
+  }, [selectedMenu, setImage]);
 
   const resteForm = () => {
     setName('');
-    setImage('');
+    setImage && setImage('');
     setPrice('');
   }
 
@@ -39,13 +50,32 @@ function AddProductForm(props: Props) {
     return <MdOutlineEuro color={theme.colors.greyMedium}/>
   }
 
+  const handleUpdate = (e: React.ChangeEvent<HTMLInputElement>, value: string) => {
+    const array = [...menu];
+    array.map(menu => {
+      if (menu.id === selectedMenu.id) {
+        if (value === 'name') {
+          menu.title = e.target.value
+          setName(e.target.value);
+        } else if (value === 'image') {
+          menu.imageSource = e.target.value
+          setImage && setImage(e.target.value)
+        } else {
+          menu.price = Number(e.target.value);
+          setPrice(e.target.value);
+        }
+      }
+    })
+    setMenu(array);
+  }
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>, value: string) => {
     switch (value) {
       case 'name':
         setName(e.target.value);
         break;
       case 'image':
-        setImage(e.target.value);
+        setImage && setImage(e.target.value);
         break;
       case 'price':
         setPrice(e.target.value);
@@ -64,15 +94,15 @@ function AddProductForm(props: Props) {
   }
 
   const handleSubmit = () => {
-    setMenu([...menu, {
-      id: menu.length + 1,
+    setMenu([{
+      id: crypto.randomUUID(),
       imageSource: image,
       price: Number(price),
       title: name,
       quantity: 0,
       isAdvertised: false,
       isAvailable: true
-    }]);
+    }, ...menu]);
     resteForm();
     handleSuccessMessage();
   }
@@ -80,7 +110,11 @@ function AddProductForm(props: Props) {
   return (
     <FormContainer>
       <Input
-        onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleChange(e, 'name')}
+        onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+          selectedTab === 0
+           ? handleChange(e, 'name')
+           : handleUpdate(e, 'name')
+          }}
         value={name}
         width={300}
         placeholer="Nom du produit"
@@ -88,7 +122,11 @@ function AddProductForm(props: Props) {
         type="text"
       />
       <Input
-        onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleChange(e, 'image')}
+        onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+          selectedTab === 0
+           ? handleChange(e, 'image')
+           : handleUpdate(e, 'image')
+          }}
         value={image}
         width={400}
         placeholer="Lien URL d'une image (ex: https://la-photo-de-mon-produit.png)"
@@ -96,7 +134,11 @@ function AddProductForm(props: Props) {
         type="text"
       />
       <Input
-        onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleChange(e, 'price')}
+        onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+          selectedTab === 0
+           ? handleChange(e, 'price')
+           : handleUpdate(e, 'price')
+          }}
         value={price}
         width={250}
         placeholer="Prix"
@@ -104,12 +146,16 @@ function AddProductForm(props: Props) {
         type="number"
       />
       <FormButtonContainer>
-        <Button
-          size="sm"
-          background={theme.colors.success}
-          text="Ajouter un nouveau produit"
-          onClick={handleSubmit}
-        />
+        {button ?
+          <Button
+            size="sm"
+            background={theme.colors.success}
+            text="Ajouter un nouveau produit"
+            onClick={handleSubmit}
+          />
+          :
+          <StyledText>Cliquez sur un produit pour le modifier en temps réel</StyledText>
+        }
         {submitted &&
           <FormCustomText>
             <span><FiCheck/></span>
@@ -128,6 +174,10 @@ const FormContainer = styled.div`
   flex-direction: column;
 
   margin-left: 30px;
+`;
+
+const StyledText = styled.p`
+ color: ${theme.colors.primary};
 `;
 
 const FormButtonContainer = styled.div`

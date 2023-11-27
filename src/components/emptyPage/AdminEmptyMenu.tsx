@@ -5,12 +5,16 @@ import { useContext } from "react";
 import { menuContext } from "../../context/menuContext";
 import { MenuContextType } from "../../types/menu";
 import { fakeMenu2 } from "../../data/fakeMenu";
+import { CartContext } from "../../context/cartContext";
+import { CartContextType } from "../../types/cart";
 
 function AdminEmptyMenu() {
   const { setMenu } = useContext(menuContext) as MenuContextType;
+  const { setCart } = useContext(CartContext) as CartContextType;
 
   const handleClick = () => {
     setMenu(fakeMenu2);
+    setCart([]);
   }
 
   return (

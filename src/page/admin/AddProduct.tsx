@@ -10,7 +10,7 @@ function AddProduct() {
     <AddProductContainer>
       <FormWrapper>
         <AddImage image={image}/>
-        <AddProductForm image={image} setImage={setImage}/>
+        <AddProductForm image={image} setImage={setImage} button/>
       </FormWrapper>
     </AddProductContainer>
   )
