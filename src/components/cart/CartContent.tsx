@@ -1,10 +1,28 @@
 import styled from "styled-components"
 import { theme } from "../../theme/theme";
+import { useContext } from "react";
+import { CartContextType } from "../../types/cart";
+import { CartContext } from "../../context/cartContext";
+import CartItem from "./CartItem";
 
 function CartContent() {
+  const { cart } = useContext(CartContext) as CartContextType;
+
   return (
     <CartContainer>
-      <p>Votre commande est vide.</p>
+      {cart.length > 0 &&
+        <div>
+          {cart.map(item => {
+            return (
+              <CartItem item={item}/>
+            )
+          })}
+        </div>
+      }
+
+      {cart.length === 0 &&
+        <p>Votre commande est vide.</p>
+      }
     </CartContainer>
   )
 }

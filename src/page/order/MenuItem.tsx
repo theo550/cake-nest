@@ -10,6 +10,8 @@ import { AdminContext } from "../../App"
 import { AdminContextType, SelectedMenuContextType, SelectedTabContextType, isOpenContextType } from "../../types/admin"
 import { isOpenContext } from "../../context/isOpenContext"
 import { AdminTabContext } from "../../components/admin/AdminPanel"
+import { CartContext } from "../../context/cartContext"
+import { CartContextType } from "../../types/cart"
 
 function MenuItem() {
   const { menu, setMenu } = useContext(menuContext) as MenuContextType;
@@ -17,6 +19,7 @@ function MenuItem() {
   const { setIsOpen } = useContext(isOpenContext) as isOpenContextType;
   const { setSelectedTab } = useContext(AdminTabContext) as SelectedTabContextType;
   const { selectedMenu, setSelectedMenu } = useContext(SelectedMenuContext) as SelectedMenuContextType;
+  const { cart, setCart } = useContext(CartContext) as CartContextType;
   
   const handleDeleteItem = (id: number) => {
     setMenu([...menu.filter(menu => menu.id !== id)]);
@@ -28,6 +31,10 @@ function MenuItem() {
       setSelectedTab(1);
       setSelectedMenu(item);
     }
+  }
+
+  const addItem = (menu: MenuType) => {
+    setCart([...cart, menu])
   }
 
   return (
@@ -45,7 +52,7 @@ function MenuItem() {
             <h3>{menu.title}</h3>
             <div>
               <p>{replaceDot(formatPrice(menu.price))}€</p>
-              <Button text="Ajouter" isSelected={selectedMenu.id === menu.id}/>
+              <Button onClick={() => addItem(menu)} text="Ajouter" isSelected={selectedMenu.id === menu.id}/>
             </div>
           </MenuItemContainer>
         )
