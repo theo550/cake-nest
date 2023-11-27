@@ -1,6 +1,6 @@
+import { useContext } from "react";
 import styled from "styled-components"
 import { theme } from "../../theme/theme";
-import { useContext } from "react";
 import { CartContextType } from "../../types/cart";
 import { CartContext } from "../../context/cartContext";
 import CartItem from "./CartItem";
@@ -14,7 +14,10 @@ function CartContent() {
         <CartList>
           {cart.map(item => {
             return (
-              <CartItem key={Math.random()} item={item}/>
+              <CartItem
+                key={Math.random()}
+                item={item}
+              />
             )
           })}
         </CartList>

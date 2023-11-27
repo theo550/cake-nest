@@ -1,7 +1,11 @@
+import { useContext, useEffect, useState } from "react";
 import styled from "styled-components";
 import { theme } from "../../theme/theme";
 import CartHeader from "../cart/CartHeader";
 import CartContent from "../cart/CartContent";
+import { CartContextType } from "../../types/cart";
+import { CartContext } from "../../context/cartContext";
+import { calculateTotalPrice } from "../../utils/math";
 
 type Props = {
   children: JSX.Element;
@@ -10,10 +14,20 @@ type Props = {
 function Main(props: Props) {
   const { children } = props;
 
+  const [total, setTotal] = useState(0);
+
+  const { cart } = useContext(CartContext) as CartContextType;
+
+  useEffect(() => {
+    setTotal(calculateTotalPrice(cart));
+  }, [cart])
+
   return (
     <Container>
       <CartContainer>
-        <CartHeader/>
+        <CartHeader
+          total={total}
+        />
         <CartContent/>
       </CartContainer>
       {children}
