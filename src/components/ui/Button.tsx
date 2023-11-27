@@ -6,7 +6,7 @@ type Props = {
   span?: string;
   background?: string;
   size?: 'sm' | 'md' | 'lg';
-  onClick?: () => void;
+  onClick?: (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
   isSelected?: boolean;
 }
 

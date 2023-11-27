@@ -15,7 +15,16 @@ export const sortArrayOfObject = (array: MenuType[]) => {
 export const calculateTotalPrice = (array: MenuType[]) => {
   let total = 0;
   array.map(item => {
-    total += item.price;
+    total += item.price * item.quantity;
   })
   return total;
+}
+
+export const isIncludeInArray = (array: MenuType[], menu: MenuType) => {
+  const ids: number[] = [];
+  array.map(item => {
+    ids.push(item.id);
+  })
+
+  return ids.includes(menu.id);
 }

@@ -2,7 +2,7 @@ import { useContext } from "react"
 import Button from "../../components/ui/Button"
 import styled from "styled-components"
 import { theme } from "../../theme/theme"
-import { formatPrice, replaceDot, sortArrayOfObject } from "../../utils/math"
+import { formatPrice, isIncludeInArray, replaceDot, sortArrayOfObject } from "../../utils/math"
 import { TiDelete } from 'react-icons/ti'
 import { MenuContextType, MenuType } from "../../types/menu"
 import { SelectedMenuContext, menuContext } from "../../context/menuContext"
@@ -21,7 +21,8 @@ function MenuItem() {
   const { selectedMenu, setSelectedMenu } = useContext(SelectedMenuContext) as SelectedMenuContextType;
   const { cart, setCart } = useContext(CartContext) as CartContextType;
   
-  const handleDeleteItem = (id: number) => {
+  const handleDeleteItem = (e: React.MouseEvent<HTMLDivElement, MouseEvent> ,id: number) => {
+    e.stopPropagation();
     setMenu([...menu.filter(menu => menu.id !== id)]);
   }
 
@@ -33,8 +34,19 @@ function MenuItem() {
     }
   }
 
-  const addItem = (menu: MenuType) => {
-    setCart([...cart, menu])
+  const addItem = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>, menu: MenuType) => {
+    e.stopPropagation();
+    if (!isIncludeInArray(cart, menu)) {
+      setCart([...cart, {...menu, quantity: 1}])
+    } else {
+      const newCart = [...cart];
+      newCart.map(item => {
+        if (item.id === menu.id) {
+          item.quantity += 1
+        }
+      })
+      setCart(newCart);
+    }
   }
 
   return (
@@ -44,7 +56,7 @@ function MenuItem() {
         return (
           <MenuItemContainer $isselected={selectedMenu.id === menu.id} $isadmin={isAdmin} key={menu.id} onClick={() => handleSelectItem(menu)}>
             {isAdmin &&
-              <CustomDeleteButton onClick={() => handleDeleteItem(menu.id)}>
+              <CustomDeleteButton onClick={(e) => handleDeleteItem(e, menu.id)}>
                 <TiDelete size='2rem'/>
               </CustomDeleteButton>
             }
@@ -52,7 +64,7 @@ function MenuItem() {
             <h3>{menu.title}</h3>
             <div>
               <p>{replaceDot(formatPrice(menu.price))}€</p>
-              <Button onClick={() => addItem(menu)} text="Ajouter" isSelected={selectedMenu.id === menu.id}/>
+              <Button onClick={(e) => addItem(e, menu)} text="Ajouter" isSelected={selectedMenu.id === menu.id}/>
             </div>
           </MenuItemContainer>
         )
