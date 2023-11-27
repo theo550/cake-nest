@@ -9,10 +9,13 @@ function OrderPage() {
   const { menu } = useContext(menuContext) as MenuContextType;
   return (
     <OrderContainer>
-      {menu.length > 0
-        ?  <MenuItem/>
-        : <EmptyPage/>
-      }
+      
+      <MenuContainer>
+        {menu.length > 0
+          ?  <MenuItem/>
+          : <EmptyPage/>
+        }
+      </MenuContainer>
     </OrderContainer>
   )
 }
@@ -20,8 +23,13 @@ function OrderPage() {
 export default OrderPage;
 
 const OrderContainer = styled.div`
-  padding: 50px 50px 150px;
-  flex-grow: 1;
+  /* flex-grow: 1; */
+  height: 100%;
 
+  display: flex;
+`;
+
+const MenuContainer = styled.div`
+  padding: 50px;
   overflow: scroll;
 `;
