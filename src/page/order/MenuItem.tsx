@@ -2,7 +2,7 @@ import { useContext } from "react"
 import Button from "../../components/ui/Button"
 import styled from "styled-components"
 import { theme } from "../../theme/theme"
-import { formatPrice, replaceDot, sortArrayOfObject } from "../../utils/math"
+import { formatPrice, replaceDot } from "../../utils/math"
 import { TiDelete } from 'react-icons/ti'
 import { MenuContextType, MenuType } from "../../types/menu"
 import { SelectedMenuContext, menuContext } from "../../context/menuContext"
@@ -10,6 +10,9 @@ import { AdminContext } from "../../App"
 import { AdminContextType, SelectedMenuContextType, SelectedTabContextType, isOpenContextType } from "../../types/admin"
 import { isOpenContext } from "../../context/isOpenContext"
 import { AdminTabContext } from "../../components/admin/AdminPanel"
+import { CartContext } from "../../context/cartContext"
+import { CartContextType } from "../../types/cart"
+import { UUID } from "crypto"
 
 function MenuItem() {
   const { menu, setMenu } = useContext(menuContext) as MenuContextType;
@@ -17,8 +20,10 @@ function MenuItem() {
   const { setIsOpen } = useContext(isOpenContext) as isOpenContextType;
   const { setSelectedTab } = useContext(AdminTabContext) as SelectedTabContextType;
   const { selectedMenu, setSelectedMenu } = useContext(SelectedMenuContext) as SelectedMenuContextType;
+  const { cart, setCart } = useContext(CartContext) as CartContextType;
   
-  const handleDeleteItem = (id: number) => {
+  const handleDeleteItem = (e: React.MouseEvent<HTMLDivElement, MouseEvent> ,id: number | UUID) => {
+    e.stopPropagation();
     setMenu([...menu.filter(menu => menu.id !== id)]);
   }
 
@@ -30,14 +35,29 @@ function MenuItem() {
     }
   }
 
+  const addItem = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>, item: MenuType) => {
+    e.stopPropagation();
+    if (cart.filter(menu => menu.id === item.id).length === 0) {
+      setCart([...cart, { id: item.id, quantity: 1}]);
+    } else {
+      const newCart = [...cart];
+      newCart.map(menu => {
+        if (menu.id === item.id) {
+          menu.quantity += 1
+        }
+      })
+      setCart(newCart);
+    }
+  }
+
   return (
     <MenuWrapper>
 
-      {sortArrayOfObject(menu).map(menu => {
+      {menu.map(menu => {
         return (
           <MenuItemContainer $isselected={selectedMenu.id === menu.id} $isadmin={isAdmin} key={menu.id} onClick={() => handleSelectItem(menu)}>
             {isAdmin &&
-              <CustomDeleteButton onClick={() => handleDeleteItem(menu.id)}>
+              <CustomDeleteButton $isselected={selectedMenu.id === menu.id} onClick={(e) => handleDeleteItem(e, menu.id)}>
                 <TiDelete size='2rem'/>
               </CustomDeleteButton>
             }
@@ -45,7 +65,7 @@ function MenuItem() {
             <h3>{menu.title}</h3>
             <div>
               <p>{replaceDot(formatPrice(menu.price))}€</p>
-              <Button text="Ajouter" isSelected={selectedMenu.id === menu.id}/>
+              <Button onClick={(e) => addItem(e, menu)} text="Ajouter" isSelected={selectedMenu.id === menu.id}/>
             </div>
           </MenuItemContainer>
         )
@@ -93,6 +113,7 @@ const MenuItemContainer = styled.div<{ $isadmin: boolean, $isselected: boolean }
     margin: 30px 0;
     overflow: hidden;
     text-overflow: ellipsis;
+    white-space: nowrap;
   }
 
   div {
@@ -106,8 +127,8 @@ const MenuItemContainer = styled.div<{ $isadmin: boolean, $isselected: boolean }
 
 `;
 
-const CustomDeleteButton = styled.div`
-  color: ${theme.colors.primary};
+const CustomDeleteButton = styled.div<{ $isselected: boolean }>`
+  color: ${props => props.$isselected ? theme.colors.white : theme.colors.primary};
   position: absolute;
   top: 10px;
   right: 10px;
