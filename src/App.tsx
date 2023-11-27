@@ -8,6 +8,7 @@ import { fakeMenu2 } from './data/fakeMenu';
 import { AdminTabContext } from './components/admin/AdminPanel';
 import { isOpenContext } from './context/isOpenContext';
 import { MenuType, nullMenuType } from './types/menu';
+import { CartContext } from './context/cartContext';
 
 export const AdminContext = createContext<AdminContextType | null>(null);
 
@@ -17,6 +18,7 @@ function App() {
   const [selectedTab, setSelectedTab] = useState(0);
   const [isOpen, setIsOpen] = useState(false);
   const [selectedMenu, setSelectedMenu] = useState<MenuType>(nullMenuType);
+  const [cart, setCart] = useState<MenuType[]>([]);
 
   return (
     <div>
@@ -25,7 +27,9 @@ function App() {
           <AdminTabContext.Provider value={{ selectedTab, setSelectedTab }}>
             <isOpenContext.Provider value={{ isOpen, setIsOpen }}>
               <SelectedMenuContext.Provider value={{ selectedMenu, setSelectedMenu }}>
-                <Router/>
+                <CartContext.Provider value={{ cart, setCart }}>
+                  <Router/>
+                </CartContext.Provider>
               </SelectedMenuContext.Provider>
             </isOpenContext.Provider>
           </AdminTabContext.Provider>
