@@ -1,3 +1,4 @@
+import { CartType } from "../types/cart";
 import { MenuType } from "../types/menu";
 
 export const formatPrice = (price: number) => {
@@ -12,10 +13,13 @@ export const sortArrayOfObject = (array: MenuType[]) => {
   return array.sort((a, b) => b.id - a.id);
 }
 
-export const calculateTotalPrice = (array: MenuType[]) => {
+export const calculateTotalPrice = (array: MenuType[], cart: CartType[]) => {
   let total = 0;
-  array.map(item => {
-    total += item.price * item.quantity;
+  cart.map(item => {
+    const currentMenu = array.find(i => i.id === item.id);
+    if (currentMenu) {
+      total += currentMenu.price * item.quantity;
+    }
   })
   return total;
 }

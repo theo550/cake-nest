@@ -9,6 +9,7 @@ import { AdminTabContext } from './components/admin/AdminPanel';
 import { isOpenContext } from './context/isOpenContext';
 import { MenuType, nullMenuType } from './types/menu';
 import { CartContext } from './context/cartContext';
+import { CartType } from './types/cart';
 
 export const AdminContext = createContext<AdminContextType | null>(null);
 
@@ -18,7 +19,7 @@ function App() {
   const [selectedTab, setSelectedTab] = useState(0);
   const [isOpen, setIsOpen] = useState(false);
   const [selectedMenu, setSelectedMenu] = useState<MenuType>(nullMenuType);
-  const [cart, setCart] = useState<MenuType[]>([]);
+  const [cart, setCart] = useState<CartType[]>([]);
 
   return (
     <div>

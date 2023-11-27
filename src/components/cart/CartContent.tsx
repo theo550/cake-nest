@@ -1,19 +1,19 @@
 import { useContext } from "react";
 import styled from "styled-components"
 import { theme } from "../../theme/theme";
-import { CartContextType } from "../../types/cart";
-import { CartContext } from "../../context/cartContext";
 import CartItem from "./CartItem";
+import { CartContext } from "../../context/cartContext";
+import { CartContextType } from "../../types/cart";
 
 function CartContent() {
   const { cart } = useContext(CartContext) as CartContextType;
 
   return (
     <CartContainer>
-      {cart.length > 0 &&
+      {cart.filter(item => item.quantity > 0).length > 0 &&
         <CartList>
           {cart.map(item => {
-            return (
+            return item.quantity > 0 && (
               <CartItem
                 key={Math.random()}
                 item={item}
@@ -23,7 +23,7 @@ function CartContent() {
         </CartList>
       }
 
-      {cart.length === 0 &&
+      {cart.filter(item => item.quantity > 0).length === 0 &&
         <TextContainer>
           <p>Votre commande est vide.</p>
         </TextContainer>
@@ -50,8 +50,9 @@ const CartContainer = styled.div`
 const CartList = styled.div`
   width: 100%;
   display: flex;
-  flex-direction: column;
+  flex-direction: column-reverse;
   align-items: center;
+  justify-content: flex-end;
 
   margin-bottom: 10px;
 `;

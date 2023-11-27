@@ -3,9 +3,11 @@ import styled from "styled-components";
 import { theme } from "../../theme/theme";
 import CartHeader from "../cart/CartHeader";
 import CartContent from "../cart/CartContent";
-import { CartContextType } from "../../types/cart";
-import { CartContext } from "../../context/cartContext";
 import { calculateTotalPrice } from "../../utils/math";
+import { menuContext } from "../../context/menuContext";
+import { MenuContextType } from "../../types/menu";
+import { CartContext } from "../../context/cartContext";
+import { CartContextType } from "../../types/cart";
 
 type Props = {
   children: JSX.Element;
@@ -16,11 +18,12 @@ function Main(props: Props) {
 
   const [total, setTotal] = useState(0);
 
+  const { menu } = useContext(menuContext) as MenuContextType;
   const { cart } = useContext(CartContext) as CartContextType;
 
   useEffect(() => {
-    setTotal(calculateTotalPrice(cart));
-  }, [cart])
+    setTotal(calculateTotalPrice(menu, cart));
+  }, [menu, cart])
 
   return (
     <Container>

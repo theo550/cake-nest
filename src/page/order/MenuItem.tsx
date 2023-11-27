@@ -2,7 +2,7 @@ import { useContext } from "react"
 import Button from "../../components/ui/Button"
 import styled from "styled-components"
 import { theme } from "../../theme/theme"
-import { formatPrice, isIncludeInArray, replaceDot, sortArrayOfObject } from "../../utils/math"
+import { formatPrice, replaceDot, sortArrayOfObject } from "../../utils/math"
 import { TiDelete } from 'react-icons/ti'
 import { MenuContextType, MenuType } from "../../types/menu"
 import { SelectedMenuContext, menuContext } from "../../context/menuContext"
@@ -34,15 +34,15 @@ function MenuItem() {
     }
   }
 
-  const addItem = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>, menu: MenuType) => {
+  const addItem = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>, item: MenuType) => {
     e.stopPropagation();
-    if (!isIncludeInArray(cart, menu)) {
-      setCart([...cart, {...menu, quantity: 1}])
+    if (cart.filter(menu => menu.id === item.id).length === 0) {
+      setCart([...cart, { id: item.id, quantity: 1}]);
     } else {
       const newCart = [...cart];
-      newCart.map(item => {
-        if (item.id === menu.id) {
-          item.quantity += 1
+      newCart.map(menu => {
+        if (menu.id === item.id) {
+          menu.quantity += 1
         }
       })
       setCart(newCart);
@@ -56,7 +56,7 @@ function MenuItem() {
         return (
           <MenuItemContainer $isselected={selectedMenu.id === menu.id} $isadmin={isAdmin} key={menu.id} onClick={() => handleSelectItem(menu)}>
             {isAdmin &&
-              <CustomDeleteButton onClick={(e) => handleDeleteItem(e, menu.id)}>
+              <CustomDeleteButton $isselected={selectedMenu.id === menu.id} onClick={(e) => handleDeleteItem(e, menu.id)}>
                 <TiDelete size='2rem'/>
               </CustomDeleteButton>
             }
@@ -125,8 +125,8 @@ const MenuItemContainer = styled.div<{ $isadmin: boolean, $isselected: boolean }
 
 `;
 
-const CustomDeleteButton = styled.div`
-  color: ${theme.colors.primary};
+const CustomDeleteButton = styled.div<{ $isselected: boolean }>`
+  color: ${props => props.$isselected ? theme.colors.white : theme.colors.primary};
   position: absolute;
   top: 10px;
   right: 10px;

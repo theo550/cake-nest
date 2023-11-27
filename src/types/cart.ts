@@ -1,6 +1,9 @@
-import { MenuType } from "./menu"
+export type CartType = {
+  id: number;
+  quantity:number;
+}
 
 export type CartContextType = {
-  cart: MenuType[];
-  setCart: (cart: MenuType[]) => void;
+  cart: CartType[];
+  setCart: (cart: CartType[]) => void;
 }

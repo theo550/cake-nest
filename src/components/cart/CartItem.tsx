@@ -1,29 +1,39 @@
 import styled from "styled-components";
-import { MenuType } from "../../types/menu"
+import { MenuContextType } from "../../types/menu"
 import { theme } from "../../theme/theme";
 import { formatPrice, replaceDot } from "../../utils/math";
 import DeleteButtonItemCard from "./DeleteButtonItemCard";
 import './cart-item.css'
+import { CartContextType, CartType } from "../../types/cart";
+import { useContext } from "react";
+import { menuContext } from "../../context/menuContext";
+import { CartContext } from "../../context/cartContext";
 
 type Props = {
-  item: MenuType;
+  item: CartType;
 }
 function CartItem(props: Props) {
   const { item } = props;
 
-  return (
+  const { menu } = useContext(menuContext) as MenuContextType;
+  const { cart } = useContext(CartContext) as CartContextType;
+
+  const cartItem = menu.find(menu => menu.id === item.id);
+  const cartQuantity = cart.find(cart => cart.id === item.id)?.quantity
+
+  return cartItem && cartQuantity && (
     <CartItemContainer className="cart-item__container">
-      <img src={item.imageSource} alt="" />
-      <TitleContainer>
-        <h3>{item.title}</h3>
-        <p>{replaceDot(formatPrice(item.price * item.quantity))}</p>
-      </TitleContainer>
-      <p>x{item.quantity}</p>
-      <DeleteContainer className="cart-item__container--delete">
-        <DeleteButtonItemCard
-          id={item.id}
-        />
-      </DeleteContainer>
+        <img src={cartItem.imageSource} alt="" />
+        <TitleContainer>
+          <h3>{cartItem.title}</h3>
+          <p>{replaceDot(formatPrice(cartItem.price * cartQuantity))}</p>
+        </TitleContainer>
+        <p>x{cartQuantity}</p>
+        <DeleteContainer className="cart-item__container--delete">
+          <DeleteButtonItemCard
+            id={cartItem.id}
+          />
+        </DeleteContainer>
     </CartItemContainer>
   )
 }
