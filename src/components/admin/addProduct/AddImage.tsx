@@ -12,7 +12,10 @@ function AddImage(props: Props) {
       {image &&
         <img src={image} alt="" />
       }
-      <p>Aucune Image</p>
+      
+      {!image &&
+        <p>Aucune Image</p>
+      }
     </ImageContainer>
   )
 }
@@ -30,6 +33,10 @@ const ImageContainer = styled.div`
   width: 175px;
 
   cursor: pointer;
+
+  img {
+    height: 100%;
+  }
 
   p{
     color: ${theme.colors.greyMedium};

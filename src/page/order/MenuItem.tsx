@@ -4,17 +4,30 @@ import styled from "styled-components"
 import { theme } from "../../theme/theme"
 import { formatPrice, replaceDot, sortArrayOfObject } from "../../utils/math"
 import { TiDelete } from 'react-icons/ti'
-import { MenuContextType } from "../../types/menu"
-import { menuContext } from "../../context/menuContext"
+import { MenuContextType, MenuType } from "../../types/menu"
+import { SelectedMenuContext, menuContext } from "../../context/menuContext"
 import { AdminContext } from "../../App"
-import { AdminContextType } from "../../types/admin"
+import { AdminContextType, SelectedMenuContextType, SelectedTabContextType, isOpenContextType } from "../../types/admin"
+import { isOpenContext } from "../../context/isOpenContext"
+import { AdminTabContext } from "../../components/admin/AdminPanel"
 
 function MenuItem() {
   const { menu, setMenu } = useContext(menuContext) as MenuContextType;
   const { isAdmin } = useContext(AdminContext) as AdminContextType;
+  const { setIsOpen } = useContext(isOpenContext) as isOpenContextType;
+  const { setSelectedTab } = useContext(AdminTabContext) as SelectedTabContextType;
+  const { selectedMenu, setSelectedMenu } = useContext(SelectedMenuContext) as SelectedMenuContextType;
   
   const handleDeleteItem = (id: number) => {
     setMenu([...menu.filter(menu => menu.id !== id)]);
+  }
+
+  const handleSelectItem = (item: MenuType) => {
+    if (isAdmin) {
+      setIsOpen(true);
+      setSelectedTab(1);
+      setSelectedMenu(item);
+    }
   }
 
   return (
@@ -22,7 +35,7 @@ function MenuItem() {
 
       {sortArrayOfObject(menu).map(menu => {
         return (
-          <MenuItemContainer key={menu.id}>
+          <MenuItemContainer $isselected={selectedMenu.id === menu.id} $isadmin={isAdmin} key={menu.id} onClick={() => handleSelectItem(menu)}>
             {isAdmin &&
               <CustomDeleteButton onClick={() => handleDeleteItem(menu.id)}>
                 <TiDelete size='2rem'/>
@@ -32,7 +45,7 @@ function MenuItem() {
             <h3>{menu.title}</h3>
             <div>
               <p>{replaceDot(formatPrice(menu.price))}€</p>
-              <Button text="Ajouter"/>
+              <Button text="Ajouter" isSelected={selectedMenu.id === menu.id}/>
             </div>
           </MenuItemContainer>
         )
@@ -51,13 +64,22 @@ const MenuWrapper = styled.div`
   gap: 60px;
 `;
 
-const MenuItemContainer = styled.div`
+const MenuItemContainer = styled.div<{ $isadmin: boolean, $isselected: boolean }>`
 
-  width: fit-content;
+  width: 200px;
   box-shadow: -8px 8px 20px 0px rgb(0 0 0 / 20%);
   border-radius: ${theme.borderRadius.extraRound};
   padding: 30px 15px;
   position: relative;
+
+  background-color: ${props => props.$isselected ? `${theme.colors.primary}` : `${theme.colors.background_white}`};
+
+  transition: all .2s;
+  cursor: pointer;
+
+  &:hover {
+    transform: ${props => props.$isadmin && 'scale(1.1)'};
+  }
 
   img {
     width: 200px;
@@ -69,6 +91,8 @@ const MenuItemContainer = styled.div`
     font-family: 'Pacifico', cursive;
     font-size: ${theme.fonts.size.P3};
     margin: 30px 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
   div {
@@ -76,7 +100,7 @@ const MenuItemContainer = styled.div`
     align-items: center;
     justify-content: space-between;
     p {
-      color: ${theme.colors.primary};
+      color: ${props => props.$isselected ? `${theme.colors.background_white}` : `${theme.colors.primary}`};
     }
   }
 
