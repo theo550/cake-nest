@@ -42,7 +42,7 @@ export default Main
 
 const Container = styled.div`
   height: 100%;
-  background-color: #fff;
+  background-color: ${theme.colors.white};
 
   border-radius: 0 0 ${theme.borderRadius.extraRound} ${theme.borderRadius.extraRound};
 
@@ -56,7 +56,8 @@ const Container = styled.div`
 `;
 
 const CartContainer = styled.div`
-  width: 800px;
+  min-width: 370px;
+  max-width: 370px;
   height: 100%;
 
   display: flex;

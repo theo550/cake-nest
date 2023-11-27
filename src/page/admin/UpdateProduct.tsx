@@ -13,14 +13,14 @@ function UpdateProduct() {
 
   return (
     <div>
-      {selectedMenu.id > 0 &&
+      {selectedMenu.id !== 0 &&
         <FormContainer>
           <AddImage image={imageSource}/>
           <AddProductForm image={imageSource}/>
         </FormContainer>
       }
 
-      {selectedMenu.id < 1 &&
+      {selectedMenu.id === 0 &&
         <TextContainer>
           <StyledText>Cliquez sur un produit pour le modifier <span><HiCursorClick/></span></StyledText>
         </TextContainer>

@@ -1,5 +1,7 @@
+import { UUID } from "crypto";
+
 export type MenuType = {
-  id: number;
+  id: number | UUID;
   imageSource: string;
   title: string;
   price: number;

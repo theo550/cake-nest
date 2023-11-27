@@ -8,6 +8,7 @@ import { CartContextType, CartType } from "../../types/cart";
 import { useContext } from "react";
 import { menuContext } from "../../context/menuContext";
 import { CartContext } from "../../context/cartContext";
+import cupcake from '../../../public/images/cupcake-item.png';
 
 type Props = {
   item: CartType;
@@ -23,10 +24,10 @@ function CartItem(props: Props) {
 
   return cartItem && cartQuantity && (
     <CartItemContainer className="cart-item__container">
-        <img src={cartItem.imageSource} alt="" />
+        <img src={cartItem.imageSource || cupcake} alt="" />
         <TitleContainer>
           <h3>{cartItem.title}</h3>
-          <p>{replaceDot(formatPrice(cartItem.price * cartQuantity))}</p>
+          <p>{replaceDot(formatPrice(cartItem.price * cartQuantity))}€</p>
         </TitleContainer>
         <p>x{cartQuantity}</p>
         <DeleteContainer className="cart-item__container--delete">
@@ -51,6 +52,7 @@ const CartItemContainer = styled.div`
   padding: 10px;
 
   width: 85%;
+  height: 60px;
   border-radius: ${theme.borderRadius.round};
 
   box-shadow: 0px 0px 30px 0px rgba(0,0,0,0.1);
@@ -76,12 +78,14 @@ const CartItemContainer = styled.div`
 `;
 
 const TitleContainer = styled.div`
-  flex-grow: 1;
-
+  width: 50%;
   h3 {
     font-family: 'Pacifico', cursive;
     margin-bottom: 10px;
     font-size: ${theme.fonts.size.P2};
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
   }
 `;
 

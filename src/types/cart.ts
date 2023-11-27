@@ -1,5 +1,7 @@
+import { UUID } from "crypto";
+
 export type CartType = {
-  id: number;
+  id: number | UUID;
   quantity:number;
 }
 

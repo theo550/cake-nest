@@ -2,15 +2,19 @@ import { useContext } from "react";
 import { showNotification } from "../../utils/toasts"
 import styled from "styled-components";
 import { theme } from "../../theme/theme";
-import { AdminContextType } from "../../types/admin";
+import { AdminContextType, SelectedMenuContextType } from "../../types/admin";
 import { AdminContext } from "../../App";
+import { SelectedMenuContext } from "../../context/menuContext";
+import { nullMenuType } from "../../types/menu";
 
 function AdminSwitchButton() {
   const { isAdmin, setIsAdmin } = useContext(AdminContext) as AdminContextType;
+  const { setSelectedMenu } = useContext(SelectedMenuContext) as SelectedMenuContextType;
 
   const handleNotification = () => {
     showNotification({ isAdmin });
     setIsAdmin(!isAdmin)
+    setSelectedMenu(nullMenuType);
   }
 
   return (

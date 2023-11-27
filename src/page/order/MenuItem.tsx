@@ -2,7 +2,7 @@ import { useContext } from "react"
 import Button from "../../components/ui/Button"
 import styled from "styled-components"
 import { theme } from "../../theme/theme"
-import { formatPrice, replaceDot, sortArrayOfObject } from "../../utils/math"
+import { formatPrice, replaceDot } from "../../utils/math"
 import { TiDelete } from 'react-icons/ti'
 import { MenuContextType, MenuType } from "../../types/menu"
 import { SelectedMenuContext, menuContext } from "../../context/menuContext"
@@ -12,6 +12,7 @@ import { isOpenContext } from "../../context/isOpenContext"
 import { AdminTabContext } from "../../components/admin/AdminPanel"
 import { CartContext } from "../../context/cartContext"
 import { CartContextType } from "../../types/cart"
+import { UUID } from "crypto"
 
 function MenuItem() {
   const { menu, setMenu } = useContext(menuContext) as MenuContextType;
@@ -21,7 +22,7 @@ function MenuItem() {
   const { selectedMenu, setSelectedMenu } = useContext(SelectedMenuContext) as SelectedMenuContextType;
   const { cart, setCart } = useContext(CartContext) as CartContextType;
   
-  const handleDeleteItem = (e: React.MouseEvent<HTMLDivElement, MouseEvent> ,id: number) => {
+  const handleDeleteItem = (e: React.MouseEvent<HTMLDivElement, MouseEvent> ,id: number | UUID) => {
     e.stopPropagation();
     setMenu([...menu.filter(menu => menu.id !== id)]);
   }
@@ -52,7 +53,7 @@ function MenuItem() {
   return (
     <MenuWrapper>
 
-      {sortArrayOfObject(menu).map(menu => {
+      {menu.map(menu => {
         return (
           <MenuItemContainer $isselected={selectedMenu.id === menu.id} $isadmin={isAdmin} key={menu.id} onClick={() => handleSelectItem(menu)}>
             {isAdmin &&
@@ -112,6 +113,7 @@ const MenuItemContainer = styled.div<{ $isadmin: boolean, $isselected: boolean }
     margin: 30px 0;
     overflow: hidden;
     text-overflow: ellipsis;
+    white-space: nowrap;
   }
 
   div {

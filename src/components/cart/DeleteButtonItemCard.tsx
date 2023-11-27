@@ -4,9 +4,10 @@ import { theme } from "../../theme/theme";
 import { useContext } from "react";
 import { CartContext } from "../../context/cartContext";
 import { CartContextType } from "../../types/cart";
+import { UUID } from "crypto";
 
 type Props = {
-  id: number;
+  id: number | UUID;
 }
 
 function DeleteButtonItemCard(props: Props) {

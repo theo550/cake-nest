@@ -94,15 +94,15 @@ function AddProductForm(props: Props) {
   }
 
   const handleSubmit = () => {
-    setMenu([...menu, {
-      id: menu.length + 1,
+    setMenu([{
+      id: crypto.randomUUID(),
       imageSource: image,
       price: Number(price),
       title: name,
       quantity: 0,
       isAdvertised: false,
       isAvailable: true
-    }]);
+    }, ...menu]);
     resteForm();
     handleSuccessMessage();
   }

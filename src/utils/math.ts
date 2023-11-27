@@ -1,3 +1,4 @@
+import { UUID } from "crypto";
 import { CartType } from "../types/cart";
 import { MenuType } from "../types/menu";
 
@@ -7,10 +8,6 @@ export const formatPrice = (price: number) => {
 
 export const replaceDot = (price: string) => {
   return price.replace('.', ',');
-}
-
-export const sortArrayOfObject = (array: MenuType[]) => {
-  return array.sort((a, b) => b.id - a.id);
 }
 
 export const calculateTotalPrice = (array: MenuType[], cart: CartType[]) => {
@@ -25,7 +22,7 @@ export const calculateTotalPrice = (array: MenuType[], cart: CartType[]) => {
 }
 
 export const isIncludeInArray = (array: MenuType[], menu: MenuType) => {
-  const ids: number[] = [];
+  const ids: (number | UUID)[] = [];
   array.map(item => {
     ids.push(item.id);
   })
