@@ -2,8 +2,10 @@ import styled from "styled-components";
 import { theme } from "../../theme/theme";
 import { useContext } from "react";
 import { AdminTabContext } from "./AdminPanel";
-import { SelectedTabContextType, isOpenContextType } from "../../types/admin";
+import { SelectedMenuContextType, SelectedTabContextType, isOpenContextType } from "../../types/admin";
 import { isOpenContext } from "../../context/isOpenContext";
+import { SelectedMenuContext } from "../../context/menuContext";
+import { nullMenuType } from "../../types/menu";
 
 type Props = {
   id: number;
@@ -16,10 +18,12 @@ function AdminTab(props: Props) {
   const { id, title, icon, isSelected } = props;
   const { selectedTab, setSelectedTab } = useContext(AdminTabContext) as SelectedTabContextType;
   const { setIsOpen } = useContext(isOpenContext) as isOpenContextType;
+  const { setSelectedMenu } = useContext(SelectedMenuContext) as SelectedMenuContextType;
 
   const handleSelection = () => {
     setSelectedTab(id);
     selectedTab !== id && setIsOpen(true);
+    id === 0 && setSelectedMenu(nullMenuType);
   }
 
   return (

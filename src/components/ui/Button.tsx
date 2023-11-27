@@ -7,10 +7,11 @@ type Props = {
   background?: string;
   size?: 'sm' | 'md' | 'lg';
   onClick?: () => void;
+  isSelected?: boolean;
 }
 
 const Button = (props: Props) => {
-  const { text, span, background, size, onClick } = props;
+  const { text, span, background, size, isSelected, onClick } = props;
 
   return (
     <StyledButton
@@ -18,6 +19,7 @@ const Button = (props: Props) => {
       background={background || theme.colors.primary}
       type='submit'
       onClick={onClick}
+      $isSelected={isSelected ? isSelected : false}
     >
       {text} {span && <span>{span}</span>}
     </StyledButton>
@@ -26,12 +28,12 @@ const Button = (props: Props) => {
 
 export default Button;
 
-const StyledButton = styled.button<{ background: string, size: string }>`
+const StyledButton = styled.button<{ background: string, size: string, $isSelected: boolean }>`
   height: 50px;
   border-radius: ${theme.borderRadius.round};
   border: none;
-  background-color: ${props => props.background};
-  color: ${theme.colors.white};
+  background-color: ${props => props.$isSelected ? theme.colors.background_white : props.background};
+  color: ${props => props.$isSelected ? theme.colors.primary : theme.colors.white};
   font-size: ${props => props.size === 'sm' ? theme.fonts.size.XS : theme.fonts.size.P1};
   font-weight: ${theme.fonts.weights.bold};
   cursor: pointer;

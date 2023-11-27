@@ -1,3 +1,5 @@
+import { MenuType } from "./menu";
+
 export type AdminContextType = {
   isAdmin: boolean;
   setIsAdmin: (isAdmin: boolean) => void;
@@ -11,4 +13,9 @@ export type SelectedTabContextType = {
 export type isOpenContextType = {
   isOpen: boolean;
   setIsOpen: (isOpen: boolean) => void;
+}
+
+export type SelectedMenuContextType = {
+  selectedMenu: MenuType;
+  setSelectedMenu: (selectedMenu: MenuType) => void;
 }
