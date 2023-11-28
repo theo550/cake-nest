@@ -15,7 +15,8 @@ function DeleteButtonItemCard(props: Props) {
 
   const { cart, setCart } = useContext(CartContext) as CartContextType;
 
-  const handleOnDelete = () => {
+  const handleOnDelete = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+    e.stopPropagation();
     setCart([...cart.filter(item => item.id !== id)])
   }
 

@@ -12,7 +12,7 @@ function UpdateProduct() {
   const { imageSource } = selectedMenu;
 
   return (
-    <div>
+    <UpdateContainer>
       {selectedMenu.id !== 0 &&
         <FormContainer>
           <AddImage image={imageSource}/>
@@ -25,11 +25,16 @@ function UpdateProduct() {
           <StyledText>Cliquez sur un produit pour le modifier <span><HiCursorClick/></span></StyledText>
         </TextContainer>
       }
-    </div>
+    </UpdateContainer>
   )
 }
 
 export default UpdateProduct
+
+const UpdateContainer = styled.div`
+  height: 300px;
+  display: flex;
+`;
 
 const FormContainer = styled.div`
   display: flex;

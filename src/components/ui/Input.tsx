@@ -1,17 +1,29 @@
+import React, { useContext, useEffect, useRef } from 'react';
 import styled from "styled-components"
 import { theme } from "../../theme/theme";
+import { SelectedMenuContext } from '../../context/menuContext';
+import { SelectedMenuContextType } from '../../types/admin';
 
 type Props = {
   Icon: () => JSX.Element;
   placeholer: string;
   width: number;
-  value: string;
+  value: string | number;
   type: string;
+  isFirstInput?: boolean;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
-function Input(props: Props) {
-  const { Icon, placeholer, width, value, type, onChange } = props;
+const Input= (props: Props) => {
+  const { Icon, placeholer, width, value, type, isFirstInput, onChange } = props;
+
+  const { selectedMenu } = useContext(SelectedMenuContext) as SelectedMenuContextType;
+
+  const titleRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    isFirstInput && titleRef.current?.focus();
+  }, [isFirstInput, selectedMenu]);
 
   return (
     <CustomInputWrapper>
@@ -24,6 +36,7 @@ function Input(props: Props) {
         $width={width}
         type={type}
         placeholder={placeholer}
+        ref={titleRef}
       />
     </CustomInputWrapper>
   )

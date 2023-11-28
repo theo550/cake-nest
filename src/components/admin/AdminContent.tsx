@@ -28,6 +28,4 @@ export default AdminContent
 
 const AdminContentContainer = styled.div<{ $isOpen: boolean }>`
   background-color: ${theme.colors.background_white};
-  height: ${props => props.$isOpen ? '300px' : 0};
-  transition: all .4s;
 `;

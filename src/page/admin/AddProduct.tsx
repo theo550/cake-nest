@@ -19,7 +19,7 @@ function AddProduct() {
 export default AddProduct
 
 const AddProductContainer = styled.div`
-  height: 100%;
+  height: 300px;
 `;
 
 const FormWrapper = styled.div`
