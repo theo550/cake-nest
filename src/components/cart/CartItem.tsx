@@ -81,6 +81,8 @@ const CartItemContainer = styled.div<{ $isselected: boolean }>`
 
   position: relative;
 
+  overflow: hidden;
+
   cursor: pointer;
   transition: all .2s;
 
@@ -110,7 +112,7 @@ const TitleContainer = styled.div`
 `;
 
 const DeleteContainer = styled.div`
-  transform: scaleX(0);
+  transform: translateX(100%);
   width: 70px;
   height: 100%;
 
@@ -120,6 +122,9 @@ const DeleteContainer = styled.div`
   top: 0;
 
   color: ${theme.colors.white};
+
+  transition: all .4s .2s;
+  transform-origin: right;
 
   &:hover {
     color: ${theme.colors.dark};

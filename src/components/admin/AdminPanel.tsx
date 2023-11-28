@@ -21,4 +21,5 @@ const AdminContainer = styled.div`
   bottom: 0;
   left: 0;
   position: sticky;
+  overflow: none;
 `;
