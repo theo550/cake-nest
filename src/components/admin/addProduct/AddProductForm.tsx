@@ -18,7 +18,7 @@ type Props = {
   button?: boolean;
 }
 
-function AddProductForm(props: Props) {
+const AddProductForm = (props: Props) => {
   const {image, button, setImage} = props;
   const [name, setName] = useState('');
   const [price, setPrice] = useState('');
@@ -61,8 +61,13 @@ function AddProductForm(props: Props) {
           menu.imageSource = e.target.value
           setImage && setImage(e.target.value)
         } else {
-          menu.price = Number(e.target.value);
-          setPrice(e.target.value);
+          if (isNaN(Number(e.target.value))) {
+            setPrice('0,00')
+            menu.price = 0;
+          } else {
+            menu.price = Number(e.target.value);
+            setPrice(e.target.value)
+          }
         }
       }
     })
@@ -120,6 +125,7 @@ function AddProductForm(props: Props) {
         placeholer="Nom du produit"
         Icon={renderCupcake}
         type="text"
+        isFirstInput
       />
       <Input
         onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
