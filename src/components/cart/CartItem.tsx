@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
 import { MenuContextType, nullMenuType } from "../../types/menu"
 import { theme } from "../../theme/theme";
 import { formatPrice, replaceDot } from "../../utils/math";
@@ -61,6 +61,15 @@ function CartItem(props: Props) {
 
 export default CartItem
 
+const fadeIn = keyframes`
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+`;
+
 const CartItemContainer = styled.div<{ $isselected: boolean }>`
   display: flex;
   align-items: center;
@@ -85,6 +94,7 @@ const CartItemContainer = styled.div<{ $isselected: boolean }>`
 
   cursor: pointer;
   transition: all .2s;
+  animation: 1s ${fadeIn} ease-out;
 
   &:hover {
     transform: scale(1.03);
