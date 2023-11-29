@@ -62,8 +62,9 @@ const CustomInput = styled.input<{ $width: number }>`
   border-radius: ${theme.borderRadius.round};
 
   min-width: ${props => props.$width}px;
+  max-width: ${props => props.$width}px;
   height: 30px;
-  padding: 5px 100px 5px 50px;
+  padding: 5px 5px 5px 50px;
 
   background-color: ${theme.colors.greyLight};
   color: ${theme.colors.greyMedium};

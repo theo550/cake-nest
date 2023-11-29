@@ -1,4 +1,4 @@
-import styled, { keyframes } from "styled-components";
+import styled from "styled-components";
 import { MenuContextType, nullMenuType } from "../../types/menu"
 import { theme } from "../../theme/theme";
 import { formatPrice, replaceDot } from "../../utils/math";
@@ -47,7 +47,10 @@ function CartItem(props: Props) {
         <img src={cartItem.imageSource || cupcake} alt="" />
         <TitleContainer>
           <h3>{cartItem.title}</h3>
-          <p>{replaceDot(formatPrice(cartItem.price * cartQuantity))}€</p>
+          {menu.find(menu => menu.id === item.id)?.isAvailable
+            ? <p>{replaceDot(formatPrice(cartItem.price * cartQuantity))}€</p>
+            : <p>Non disponible</p>
+          }
         </TitleContainer>
         <p>x{cartQuantity}</p>
         <DeleteContainer className="cart-item__container--delete">
@@ -60,15 +63,6 @@ function CartItem(props: Props) {
 }
 
 export default CartItem
-
-const fadeIn = keyframes`
-  0% {
-    opacity: 0;
-  }
-  100% {
-    opacity: 1;
-  }
-`;
 
 const CartItemContainer = styled.div<{ $isselected: boolean }>`
   display: flex;
@@ -94,7 +88,6 @@ const CartItemContainer = styled.div<{ $isselected: boolean }>`
 
   cursor: pointer;
   transition: all .2s;
-  animation: 1s ${fadeIn} ease-out;
 
   &:hover {
     transform: scale(1.03);

@@ -16,7 +16,10 @@ function UpdateProduct() {
       {selectedMenu.id !== 0 &&
         <FormContainer>
           <AddImage image={imageSource}/>
-          <AddProductForm image={imageSource}/>
+          <AddProductForm
+            image={imageSource}
+            update
+          />
         </FormContainer>
       }
 

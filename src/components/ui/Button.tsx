@@ -8,10 +8,11 @@ type Props = {
   size?: 'sm' | 'md' | 'lg';
   onClick?: (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
   isSelected?: boolean;
+  disabled?: boolean;
 }
 
 const Button = (props: Props) => {
-  const { text, span, background, size, isSelected, onClick } = props;
+  const { text, span, background, size, isSelected, disabled, onClick } = props;
 
   return (
     <StyledButton
@@ -20,6 +21,7 @@ const Button = (props: Props) => {
       type='submit'
       onClick={onClick}
       $isSelected={isSelected ? isSelected : false}
+      disabled={disabled}
     >
       {text} {span && <span>{span}</span>}
     </StyledButton>
