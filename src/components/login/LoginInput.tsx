@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import { theme } from '../../theme/theme';
 import { PiUserCircleFill } from "react-icons/pi";
 import Button from '../ui/Button';
-import { createUser } from '../../api/user';
+import { getUser } from '../../api/user';
 
 const LoginInput = () => {
   const [name, setName] = useState('');
@@ -13,7 +13,8 @@ const LoginInput = () => {
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (name !== '') {
-      createUser(name);
+      getUser(name);
+      localStorage.setItem('user', JSON.stringify({ user_name: name, menu: [] }))
       navigate('/order', {state:{ name: name }})
       setName('');
     } else {

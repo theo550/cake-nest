@@ -13,6 +13,9 @@ import { AdminTabContext } from "../../components/admin/AdminPanel"
 import { CartContext } from "../../context/cartContext"
 import { CartContextType } from "../../types/cart"
 import { UUID } from "crypto"
+import { updateUser } from "../../api/user"
+import { UserContext } from "../../context/userContext"
+import { UserContextType } from "../../types/user"
 
 function MenuItem() {
   const { menu, setMenu } = useContext(menuContext) as MenuContextType;
@@ -21,9 +24,11 @@ function MenuItem() {
   const { setSelectedTab } = useContext(AdminTabContext) as SelectedTabContextType;
   const { selectedMenu, setSelectedMenu } = useContext(SelectedMenuContext) as SelectedMenuContextType;
   const { cart, setCart } = useContext(CartContext) as CartContextType;
+  const { user } = useContext(UserContext) as UserContextType;
   
   const handleDeleteItem = (e: React.MouseEvent<HTMLDivElement, MouseEvent> ,id: number | UUID) => {
     e.stopPropagation();
+    updateUser(user.user_name, [...menu.filter(menu => menu.id !== id)]);
     setMenu([...menu.filter(menu => menu.id !== id)]);
   }
 

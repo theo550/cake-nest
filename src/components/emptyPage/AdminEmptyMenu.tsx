@@ -7,12 +7,17 @@ import { MenuContextType } from "../../types/menu";
 import { fakeMenu2 } from "../../data/fakeMenu";
 import { CartContext } from "../../context/cartContext";
 import { CartContextType } from "../../types/cart";
+import { UserContext } from "../../context/userContext";
+import { UserContextType } from "../../types/user";
+import { createUser } from "../../api/user";
 
 function AdminEmptyMenu() {
   const { setMenu } = useContext(menuContext) as MenuContextType;
   const { setCart } = useContext(CartContext) as CartContextType;
+  const { user } = useContext(UserContext) as UserContextType;
 
   const handleClick = () => {
+    createUser(user.user_name, fakeMenu2)
     setMenu(fakeMenu2);
     setCart([]);
   }

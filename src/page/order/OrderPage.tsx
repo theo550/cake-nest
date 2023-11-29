@@ -1,26 +1,40 @@
 import styled from "styled-components";
 import MenuItem from "./MenuItem";
-import { useContext } from "react";
-import { menuContext } from "../../context/menuContext";
-import { MenuContextType } from "../../types/menu";
+import { useContext, useEffect } from "react";
 import EmptyPage from "./EmptyPage";
 import { getUser } from "../../api/user";
+import { UserContext } from "../../context/userContext";
+import { UserContextType, UserType } from "../../types/user";
+import { menuContext } from "../../context/menuContext";
+import { MenuContextType } from "../../types/menu";
 
 function OrderPage() {
-  const { menu } = useContext(menuContext) as MenuContextType;
+  const { user, setUser } = useContext(UserContext) as UserContextType;
+  const { setMenu } = useContext(menuContext) as MenuContextType;
 
-  const user = getUser('ZotQScpCKHTNftJUIGSz');
-  user.then(data => console.log(data?.user_name));
+  useEffect(() => {
+    const currentUserName = localStorage.getItem('user');
+    if (currentUserName) {
+      const currentUser = getUser(JSON.parse(currentUserName).user_name);
+      currentUser.then(data => {
+        if (data) {
+          setUser(data as UserType);
+          setMenu(data.menu);
+        }
+      });
+    }
+  }, [setUser, setMenu]);
 
   return (
     <OrderContainer>
       
       <MenuContainer>
-        {menu.length > 0
+        {user.menu.length > 0
           ?  <MenuItem/>
           : <EmptyPage/>
         }
       </MenuContainer>
+
     </OrderContainer>
   )
 }
@@ -28,7 +42,6 @@ function OrderPage() {
 export default OrderPage;
 
 const OrderContainer = styled.div`
-  /* flex-grow: 1; */
   height: 100%;
 
   display: flex;

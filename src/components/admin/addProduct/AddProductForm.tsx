@@ -11,6 +11,9 @@ import { SelectedMenuContext, menuContext } from "../../../context/menuContext";
 import { MenuContextType } from "../../../types/menu";
 import { SelectedMenuContextType, SelectedTabContextType } from "../../../types/admin";
 import { AdminTabContext } from "../AdminPanel";
+import { UserContextType } from "../../../types/user";
+import { UserContext } from "../../../context/userContext";
+import { updateUser } from "../../../api/user";
 
 type Props = {
   image: string;
@@ -27,6 +30,7 @@ const AddProductForm = (props: Props) => {
   const { menu, setMenu } = useContext(menuContext) as MenuContextType;
   const { selectedMenu } = useContext(SelectedMenuContext) as SelectedMenuContextType;
   const { selectedTab } = useContext(AdminTabContext) as SelectedTabContextType;
+  const { user } = useContext(UserContext) as UserContextType;
 
   useEffect(() => {
     setName(selectedMenu.title);
@@ -99,7 +103,7 @@ const AddProductForm = (props: Props) => {
   }
 
   const handleSubmit = () => {
-    setMenu([{
+    const newMenu = [{
       id: crypto.randomUUID(),
       imageSource: image,
       price: Number(price),
@@ -107,7 +111,9 @@ const AddProductForm = (props: Props) => {
       quantity: 0,
       isAdvertised: false,
       isAvailable: true
-    }, ...menu]);
+    }, ...menu]
+    setMenu(newMenu);
+    updateUser(user.user_name, newMenu)
     resteForm();
     handleSuccessMessage();
   }

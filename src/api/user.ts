@@ -1,32 +1,29 @@
-import { doc, getDoc, setDoc } from 'firebase/firestore';
+import { doc, getDoc, setDoc, updateDoc } from 'firebase/firestore';
 import { db } from './firebase-config';
+import { MenuType } from '../types/menu';
+import { fakeMenu2 } from '../data/fakeMenu';
 
 export const getUser = async(id: string) => {
   const docRef = doc(db, 'users', id);
   const docSnapshot = await getDoc(docRef);
-  console.log(docSnapshot.exists());
   if (docSnapshot.exists()) {
     const userReceived = docSnapshot.data();
-    console.log(userReceived);
     return userReceived;
+  } else {
+    createUser(id, fakeMenu2);
   }
 }
 
-export const createUser = (userId: string) => {
+export const createUser = (userId: string, menu: MenuType[]) => {
   const docRef = doc(db, 'users', userId);
   const data = {
     user_name: userId,
-    menu: [
-      {
-        id: 1,
-        imageSource: "/images/cupcake-item.png",
-        title: "BerryJoy",
-        price: 3.598,
-        quantity: 0,
-        isAvailable: true,
-        isAdvertised: false,
-      }
-    ]
+    menu: menu
   }
   setDoc(docRef, data);
+}
+
+export const updateUser = async(userId: string, menu: MenuType[]) => {
+  const docRef = doc(db, 'users', userId);
+  await updateDoc(docRef, { menu });
 }

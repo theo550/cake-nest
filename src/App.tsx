@@ -10,6 +10,8 @@ import { isOpenContext } from './context/isOpenContext';
 import { MenuType, nullMenuType } from './types/menu';
 import { CartContext } from './context/cartContext';
 import { CartType } from './types/cart';
+import { UserContext } from './context/userContext';
+import { UserType, nullUser } from './types/user';
 
 export const AdminContext = createContext<AdminContextType | null>(null);
 
@@ -20,6 +22,7 @@ function App() {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedMenu, setSelectedMenu] = useState<MenuType>(nullMenuType);
   const [cart, setCart] = useState<CartType[]>([]);
+  const [user, setUser] = useState<UserType>(nullUser);
 
   return (
     <div>
@@ -29,7 +32,9 @@ function App() {
             <isOpenContext.Provider value={{ isOpen, setIsOpen }}>
               <SelectedMenuContext.Provider value={{ selectedMenu, setSelectedMenu }}>
                 <CartContext.Provider value={{ cart, setCart }}>
-                  <Router/>
+                  <UserContext.Provider value={{ user, setUser }}>
+                    <Router/>
+                  </UserContext.Provider>
                 </CartContext.Provider>
               </SelectedMenuContext.Provider>
             </isOpenContext.Provider>
