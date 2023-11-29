@@ -1,4 +1,4 @@
-import { createContext, useState } from 'react';
+import { createContext, useEffect, useState } from 'react';
 import './App.css'
 import Router from './Router'
 import { ToastContainer } from 'react-toastify'
@@ -21,8 +21,13 @@ function App() {
   const [selectedTab, setSelectedTab] = useState(0);
   const [isOpen, setIsOpen] = useState(false);
   const [selectedMenu, setSelectedMenu] = useState<MenuType>(nullMenuType);
-  const [cart, setCart] = useState<CartType[]>([]);
   const [user, setUser] = useState<UserType>(nullUser);
+  const [cart, setCart] = useState<CartType[]>([]);
+  
+  useEffect(() => {
+    const storedCart = localStorage.getItem(user.user_name);
+    storedCart && setCart(JSON.parse(storedCart));
+  }, [setCart, user.user_name]);
 
   return (
     <div>

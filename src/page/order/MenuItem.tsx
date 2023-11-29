@@ -44,6 +44,7 @@ function MenuItem() {
     e.stopPropagation();
     if (cart.filter(menu => menu.id === item.id).length === 0) {
       setCart([...cart, { id: item.id, quantity: 1}]);
+      localStorage.setItem(user.user_name, JSON.stringify([...cart, { id: item.id, quantity: 1}]));
     } else {
       const newCart = [...cart];
       newCart.map(menu => {
@@ -52,6 +53,7 @@ function MenuItem() {
         }
       })
       setCart(newCart);
+      localStorage.setItem(user.user_name, JSON.stringify(newCart));
     }
   }
 
