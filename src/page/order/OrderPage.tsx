@@ -9,8 +9,8 @@ import { menuContext } from "../../context/menuContext";
 import { MenuContextType } from "../../types/menu";
 
 function OrderPage() {
-  const { user, setUser } = useContext(UserContext) as UserContextType;
-  const { setMenu } = useContext(menuContext) as MenuContextType;
+  const { setUser } = useContext(UserContext) as UserContextType;
+  const { menu, setMenu } = useContext(menuContext) as MenuContextType;
 
   useEffect(() => {
     const currentUserName = localStorage.getItem('user');
@@ -29,7 +29,7 @@ function OrderPage() {
     <OrderContainer>
       
       <MenuContainer>
-        {user.menu.length > 0
+        {menu.length > 0
           ?  <MenuItem/>
           : <EmptyPage/>
         }

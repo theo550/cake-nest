@@ -4,7 +4,6 @@ import Router from './Router'
 import { ToastContainer } from 'react-toastify'
 import { AdminContextType } from './types/admin';
 import { SelectedMenuContext, menuContext } from './context/menuContext';
-import { fakeMenu2 } from './data/fakeMenu';
 import { AdminTabContext } from './components/admin/AdminPanel';
 import { isOpenContext } from './context/isOpenContext';
 import { MenuType, nullMenuType } from './types/menu';
@@ -17,7 +16,7 @@ export const AdminContext = createContext<AdminContextType | null>(null);
 
 function App() {
   const [isAdmin, setIsAdmin] = useState(false);
-  const [menu, setMenu] = useState(fakeMenu2);
+  const [menu, setMenu] = useState<MenuType[]>([]);
   const [selectedTab, setSelectedTab] = useState(0);
   const [isOpen, setIsOpen] = useState(false);
   const [selectedMenu, setSelectedMenu] = useState<MenuType>(nullMenuType);

@@ -76,6 +76,7 @@ const AddProductForm = (props: Props) => {
       }
     })
     setMenu(array);
+    updateUser(user.user_name, array);
   }
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>, value: string) => {

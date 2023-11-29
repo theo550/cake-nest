@@ -30,6 +30,8 @@ function MenuItem() {
     e.stopPropagation();
     updateUser(user.user_name, [...menu.filter(menu => menu.id !== id)]);
     setMenu([...menu.filter(menu => menu.id !== id)]);
+
+    localStorage.setItem(user.user_name, JSON.stringify([...JSON.parse(localStorage.getItem(user.user_name) || '').filter((menu: MenuType) => menu.id !== id)]))
   }
 
   const handleSelectItem = (item: MenuType) => {
