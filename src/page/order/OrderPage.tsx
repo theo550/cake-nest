@@ -4,9 +4,14 @@ import { useContext } from "react";
 import { menuContext } from "../../context/menuContext";
 import { MenuContextType } from "../../types/menu";
 import EmptyPage from "./EmptyPage";
+import { getUser } from "../../api/user";
 
 function OrderPage() {
   const { menu } = useContext(menuContext) as MenuContextType;
+
+  const user = getUser('ZotQScpCKHTNftJUIGSz');
+  user.then(data => console.log(data?.user_name));
+
   return (
     <OrderContainer>
       

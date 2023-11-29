@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import { theme } from '../../theme/theme';
 import { PiUserCircleFill } from "react-icons/pi";
 import Button from '../ui/Button';
+import { createUser } from '../../api/user';
 
 const LoginInput = () => {
   const [name, setName] = useState('');
@@ -12,8 +13,9 @@ const LoginInput = () => {
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (name !== '') {
-      setName('');
+      createUser(name);
       navigate('/order', {state:{ name: name }})
+      setName('');
     } else {
       alert('Il doit y avoir un nom !')
     }
