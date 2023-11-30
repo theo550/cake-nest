@@ -5,6 +5,7 @@ import Input from "../../ui/Input";
 import { GiCupcake } from 'react-icons/gi';
 import { BsFillCameraFill } from 'react-icons/bs';
 import { MdOutlineEuro } from 'react-icons/md';
+import { FiPackage } from 'react-icons/fi';
 import { theme } from "../../../theme/theme";
 import { FiCheck } from "react-icons/fi";
 import { SelectedMenuContext, menuContext } from "../../../context/menuContext";
@@ -16,17 +17,20 @@ type Props = {
   image: string;
   setImage?: React.Dispatch<React.SetStateAction<string>>;
   button?: boolean;
+  update?: boolean;
 }
 
 const AddProductForm = (props: Props) => {
-  const {image, button, setImage} = props;
+  const {image, button, update, setImage} = props;
   const [name, setName] = useState('');
   const [price, setPrice] = useState('');
   const [submitted, setSubmitted] = useState(false);
-
+  
   const { menu, setMenu } = useContext(menuContext) as MenuContextType;
   const { selectedMenu } = useContext(SelectedMenuContext) as SelectedMenuContextType;
   const { selectedTab } = useContext(AdminTabContext) as SelectedTabContextType;
+  
+  const [isAvailable, setIsAvailable] = useState(selectedMenu.isAvailable);
 
   useEffect(() => {
     setName(selectedMenu.title);
@@ -49,6 +53,9 @@ const AddProductForm = (props: Props) => {
   const renderEuro = () => {
     return <MdOutlineEuro color={theme.colors.greyMedium}/>
   }
+  const renderPackage = () => {
+    return <FiPackage color={theme.colors.greyMedium}/>
+  }
 
   const handleUpdate = (e: React.ChangeEvent<HTMLInputElement>, value: string) => {
     const array = [...menu];
@@ -60,7 +67,7 @@ const AddProductForm = (props: Props) => {
         } else if (value === 'image') {
           menu.imageSource = e.target.value
           setImage && setImage(e.target.value)
-        } else {
+        } else if (value === 'price') {
           if (isNaN(Number(e.target.value))) {
             setPrice('0,00')
             menu.price = 0;
@@ -112,6 +119,17 @@ const AddProductForm = (props: Props) => {
     handleSuccessMessage();
   }
 
+  const handleIsAvalaible = () => {
+    const array = [...menu]
+    array.map(menu => {
+      if (menu.id === selectedMenu.id) {
+        menu.isAvailable = !menu.isAvailable
+        setIsAvailable(!isAvailable)
+      }
+    })
+    setMenu(array);
+  }
+
   return (
     <FormContainer>
       <Input
@@ -139,18 +157,31 @@ const AddProductForm = (props: Props) => {
         Icon={renderCamera}
         type="text"
       />
-      <Input
-        onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-          selectedTab === 0
-           ? handleChange(e, 'price')
-           : handleUpdate(e, 'price')
-          }}
-        value={price}
-        width={250}
-        placeholer="Prix"
-        Icon={renderEuro}
-        type="number"
-      />
+      <InputContainer>
+        <Input
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+            selectedTab === 0
+            ? handleChange(e, 'price')
+            : handleUpdate(e, 'price')
+            }}
+          value={price}
+          width={update ? 75 : 250}
+          placeholer="Prix"
+          Icon={renderEuro}
+          type="number"
+        />
+        {update &&
+          <div
+            className="input-container__stock"
+            onClick={handleIsAvalaible}
+          >
+            {renderPackage()}
+            <div>
+              <p>En {selectedMenu.isAvailable ? 'stock' : 'rupture'}</p>
+            </div>
+          </div>
+        }
+      </InputContainer>
       <FormButtonContainer>
         {button ?
           <Button
@@ -205,5 +236,23 @@ const FormCustomText = styled.p`
 
     border-radius: ${theme.borderRadius.circle};
     border: 1px solid ${theme.colors.success};
+  }
+`;
+
+const InputContainer = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 25px;
+
+  .input-container__stock {
+    display: flex;
+    gap: 10px;
+
+    background-color: ${theme.colors.greyLight};
+
+    padding: 12px 20px;
+    border-radius: ${theme.borderRadius.round};
+
+    cursor: pointer;
   }
 `;

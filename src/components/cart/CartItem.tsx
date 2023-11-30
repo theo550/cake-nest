@@ -47,7 +47,10 @@ function CartItem(props: Props) {
         <img src={cartItem.imageSource || cupcake} alt="" />
         <TitleContainer>
           <h3>{cartItem.title}</h3>
-          <p>{replaceDot(formatPrice(cartItem.price * cartQuantity))}€</p>
+          {menu.find(menu => menu.id === item.id)?.isAvailable
+            ? <p>{replaceDot(formatPrice(cartItem.price * cartQuantity))}€</p>
+            : <p>Non disponible</p>
+          }
         </TitleContainer>
         <p>x{cartQuantity}</p>
         <DeleteContainer className="cart-item__container--delete">
