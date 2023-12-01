@@ -12,6 +12,8 @@ import { SelectedMenuContext, menuContext } from "../../../context/menuContext";
 import { MenuContextType } from "../../../types/menu";
 import { SelectedMenuContextType, SelectedTabContextType } from "../../../types/admin";
 import { AdminTabContext } from "../AdminPanel";
+import { HighlightedContext } from "../../../context/highlight";
+import { highlightContextType } from "../../../types/highlight";
 
 type Props = {
   image: string;
@@ -25,10 +27,12 @@ const AddProductForm = (props: Props) => {
   const [name, setName] = useState('');
   const [price, setPrice] = useState('');
   const [submitted, setSubmitted] = useState(false);
+  const [isHightlight, setIsHighlight] = useState(false);
   
   const { menu, setMenu } = useContext(menuContext) as MenuContextType;
   const { selectedMenu } = useContext(SelectedMenuContext) as SelectedMenuContextType;
   const { selectedTab } = useContext(AdminTabContext) as SelectedTabContextType;
+  const { highlighted, discount, setDiscount, setHighlighted } = useContext(HighlightedContext) as highlightContextType;
   
   const [isAvailable, setIsAvailable] = useState(selectedMenu.isAvailable);
 
@@ -130,6 +134,45 @@ const AddProductForm = (props: Props) => {
     setMenu(array);
   }
 
+  const handleDiscountValue = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (discount.length > 0) {
+      const array = [...discount];
+      array.map(discount => {
+        if (discount.id === selectedMenu.id) {
+          discount.amount = Number(e.target.value);
+        }
+      });
+      setDiscount(array);
+    } else {
+      setDiscount([...discount, { id: selectedMenu.id, amount: Number(e.target.value )}])
+    }
+  }
+
+  const handleHighlight = () => {
+    if (highlighted.includes(Number(selectedMenu.id))) {
+      setHighlighted([...highlighted.filter(menu => menu !== selectedMenu.id)])
+    } else {
+      setHighlighted([...highlighted, Number(selectedMenu.id)]);
+    }
+  }
+
+  useEffect(() => {
+    setIsHighlight(highlighted.includes(Number(selectedMenu.id)));
+  }, [highlighted, selectedMenu.id]);
+
+  // useEffect(() => {
+  //   const array = [...menu];
+  //   array.map(menu => {
+  //     discount.map(amount => {
+  //       if (amount.id === menu.id) {
+  //         menu.price = amount.amount;
+  //         setPrice(String(amount.amount))
+  //       }
+  //     })
+  //   })
+  //   setMenu(array);
+  // }, [discount]);
+
   return (
     <FormContainer>
       <Input
@@ -200,6 +243,18 @@ const AddProductForm = (props: Props) => {
           </FormCustomText>
         }
       </FormButtonContainer>
+
+      {update &&
+        <DiscountContainer>
+          <AdvertisingButton onClick={handleHighlight}>
+            <p>{isHightlight ? 'retirer' : 'mettre en avant'}</p>
+          </AdvertisingButton>
+
+          <AdvertisingButton>
+            <input type="number" placeholder="promotion" value={discount.find(menu => menu.id === selectedMenu.id)?.amount} onChange={handleDiscountValue} />
+          </AdvertisingButton>
+        </DiscountContainer>
+      }
     </FormContainer>
   )
 }
@@ -254,5 +309,34 @@ const InputContainer = styled.div`
     border-radius: ${theme.borderRadius.round};
 
     cursor: pointer;
+  }
+`;
+
+const AdvertisingButton = styled.div`
+  display: flex;
+  gap: 10px;
+
+  width: fit-content;
+
+  background-color: ${theme.colors.greyLight};
+
+  padding: 12px 20px;
+  margin: 10px 0;
+  border-radius: ${theme.borderRadius.round};
+
+  cursor: pointer;
+`;
+
+const DiscountContainer = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 15px;
+
+  input {
+    background-color: rgba(0,0,0,0);
+    border: none;
+    outline: none;
+    height: 100%;
+    width: 100%;
   }
 `;

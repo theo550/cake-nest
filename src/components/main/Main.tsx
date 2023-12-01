@@ -8,6 +8,8 @@ import { menuContext } from "../../context/menuContext";
 import { MenuContextType } from "../../types/menu";
 import { CartContext } from "../../context/cartContext";
 import { CartContextType } from "../../types/cart";
+import { HighlightedContext } from "../../context/highlight";
+import { highlightContextType } from "../../types/highlight";
 
 type Props = {
   children: JSX.Element;
@@ -20,10 +22,11 @@ function Main(props: Props) {
 
   const { menu } = useContext(menuContext) as MenuContextType;
   const { cart } = useContext(CartContext) as CartContextType;
+  const { discount } = useContext(HighlightedContext) as highlightContextType;
 
   useEffect(() => {
-    setTotal(calculateTotalPrice(menu, cart));
-  }, [menu, cart])
+    setTotal(calculateTotalPrice(menu, cart, discount));
+  }, [menu, cart, discount])
 
   return (
     <Container>

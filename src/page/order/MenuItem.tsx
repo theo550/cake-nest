@@ -13,6 +13,8 @@ import { AdminTabContext } from "../../components/admin/AdminPanel"
 import { CartContext } from "../../context/cartContext"
 import { CartContextType } from "../../types/cart"
 import { UUID } from "crypto"
+import { HighlightedContext } from "../../context/highlight"
+import { highlightContextType } from "../../types/highlight"
 
 function MenuItem() {
   const { menu, setMenu } = useContext(menuContext) as MenuContextType;
@@ -21,6 +23,7 @@ function MenuItem() {
   const { setSelectedTab } = useContext(AdminTabContext) as SelectedTabContextType;
   const { selectedMenu, setSelectedMenu } = useContext(SelectedMenuContext) as SelectedMenuContextType;
   const { cart, setCart } = useContext(CartContext) as CartContextType;
+  const { highlighted, discount } = useContext(HighlightedContext) as highlightContextType;
   
   const handleDeleteItem = (e: React.MouseEvent<HTMLDivElement, MouseEvent> ,id: number | UUID) => {
     e.stopPropagation();
@@ -52,26 +55,67 @@ function MenuItem() {
     }
   }
 
+  const applyDiscount = (price: number, discount: number) => {
+    return replaceDot(formatPrice(price - (price * (discount / 100))));
+  }
+
   return (
     <MenuWrapper>
 
-      {menu.map(menu => {
+      {menu.filter(item => highlighted.includes(Number(item.id))).map(menu => {
         return (
-          <MenuItemContainer $isavalaible={menu.isAvailable} $isselected={selectedMenu.id === menu.id} $isadmin={isAdmin} key={menu.id} onClick={() => handleSelectItem(menu)}>
+          <MenuItemContainer $isavalaible={menu.isAvailable} $isselected={selectedMenu.id === menu.id} $isadmin={isAdmin} $isAdvertised={highlighted.includes(Number(menu.id))} key={menu.id} onClick={() => handleSelectItem(menu)}>
+            
             {isAdmin &&
               <CustomDeleteButton $isselected={selectedMenu.id === menu.id} onClick={(e) => handleDeleteItem(e, menu.id)}>
                 <TiDelete size='2rem'/>
               </CustomDeleteButton>
             }
+            
             {!menu.isAvailable &&
               <p className="rupture">Épuisé</p>
             }
+            
             <img src={menu.imageSource || '../../../public/images/cupcake-item.png'} alt="" />
             <h3>{menu.title}</h3>
             <div>
-              <p>{replaceDot(formatPrice(menu.price))}€</p>
+              <p>{applyDiscount(menu.price, discount.find(d => d.id === menu.id)?.amount || 0)}€</p>
               <Button onClick={(e) => addItem(e, menu)} text="Ajouter" isSelected={selectedMenu.id === menu.id} disabled={!menu.isAvailable}/>
             </div>
+            
+            {highlighted.includes(Number(menu.id)) &&
+              <p className="ads">sponsorisé</p>
+            }
+
+          </MenuItemContainer>
+        )
+      })}
+
+      {menu.filter(item => !highlighted.includes(Number(item.id))).map(menu => {
+        return (
+          <MenuItemContainer $isavalaible={menu.isAvailable} $isselected={selectedMenu.id === menu.id} $isadmin={isAdmin} $isAdvertised={highlighted.includes(Number(menu.id))} key={menu.id} onClick={() => handleSelectItem(menu)}>
+            
+            {isAdmin &&
+              <CustomDeleteButton $isselected={selectedMenu.id === menu.id} onClick={(e) => handleDeleteItem(e, menu.id)}>
+                <TiDelete size='2rem'/>
+              </CustomDeleteButton>
+            }
+            
+            {!menu.isAvailable &&
+              <p className="rupture">Épuisé</p>
+            }
+            
+            <img src={menu.imageSource || '../../../public/images/cupcake-item.png'} alt="" />
+            <h3>{menu.title}</h3>
+            <div>
+              <p>{applyDiscount(menu.price, discount.find(d => d.id === menu.id)?.amount || 0)}€</p>
+              <Button onClick={(e) => addItem(e, menu)} text="Ajouter" isSelected={selectedMenu.id === menu.id} disabled={!menu.isAvailable}/>
+            </div>
+            
+            {highlighted.includes(Number(menu.id)) &&
+              <p className="ads">sponsorisé</p>
+            }
+
           </MenuItemContainer>
         )
       })}
@@ -89,12 +133,13 @@ const MenuWrapper = styled.div`
   gap: 60px;
 `;
 
-const MenuItemContainer = styled.div<{ $isadmin: boolean, $isselected: boolean, $isavalaible: boolean }>`
+const MenuItemContainer = styled.div<{ $isadmin: boolean, $isselected: boolean, $isavalaible: boolean, $isAdvertised: boolean }>`
   opacity: ${props => !props.$isavalaible && .5};
 
   width: 200px;
   box-shadow: -8px 8px 20px 0px rgb(0 0 0 / 20%);
   border-radius: ${theme.borderRadius.extraRound};
+  border: ${props => props.$isAdvertised ? '3px solid red' : 'none'};
   padding: 30px 15px;
   position: relative;
 
@@ -139,6 +184,12 @@ const MenuItemContainer = styled.div<{ $isadmin: boolean, $isselected: boolean, 
     transform: translate(-50%, -50%) rotate(-30deg);
     font-size: ${theme.fonts.size.P5};
     -webkit-text-stroke: 1px ${theme.colors.dark};
+  }
+
+  .ads {
+    color: ${props => props.$isselected ? theme.colors.white : theme.colors.greyMedium};
+    text-align: right;
+    padding: 10px 10px 0 0 ;
   }
 
 `;

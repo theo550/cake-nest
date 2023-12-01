@@ -5,7 +5,7 @@ import { formatPrice, replaceDot } from "../../utils/math";
 import DeleteButtonItemCard from "./DeleteButtonItemCard";
 import './cart-item.css'
 import { CartContextType, CartType } from "../../types/cart";
-import { useContext } from "react";
+import { useContext, useMemo } from "react";
 import { SelectedMenuContext, menuContext } from "../../context/menuContext";
 import { CartContext } from "../../context/cartContext";
 import cupcake from '../../../public/images/cupcake-item.png';
@@ -13,6 +13,8 @@ import { AdminContextType, SelectedMenuContextType, SelectedTabContextType, isOp
 import { AdminContext } from "../../App";
 import { AdminTabContext } from "../admin/AdminPanel";
 import { isOpenContext } from "../../context/isOpenContext";
+import { HighlightedContext } from "../../context/highlight";
+import { highlightContextType } from "../../types/highlight";
 
 type Props = {
   item: CartType;
@@ -26,6 +28,7 @@ function CartItem(props: Props) {
   const { isAdmin } = useContext(AdminContext) as AdminContextType;
   const { setSelectedTab } = useContext(AdminTabContext) as SelectedTabContextType;
   const { setIsOpen } = useContext(isOpenContext) as isOpenContextType;
+  const { discount } = useContext(HighlightedContext) as highlightContextType;
 
   const cartItem = menu.find(menu => menu.id === item.id);
   const cartQuantity = cart.find(cart => cart.id === item.id)?.quantity
@@ -38,6 +41,8 @@ function CartItem(props: Props) {
     }
   }
 
+  const discountValue = useMemo(() => (discount.find(d => d.id === item.id)?.amount || 0) / 100, [discount, item.id]);
+
   return cartItem && cartQuantity && (
     <CartItemContainer
       className="cart-item__container"
@@ -48,7 +53,7 @@ function CartItem(props: Props) {
         <TitleContainer>
           <h3>{cartItem.title}</h3>
           {menu.find(menu => menu.id === item.id)?.isAvailable
-            ? <p>{replaceDot(formatPrice(cartItem.price * cartQuantity))}€</p>
+            ? <p>{replaceDot(formatPrice(cartItem.price * cartQuantity - (cartItem.price * cartQuantity * discountValue)))}€</p>
             : <p>Non disponible</p>
           }
         </TitleContainer>
